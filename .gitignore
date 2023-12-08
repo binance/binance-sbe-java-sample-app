@@ -1,0 +1,4 @@
+# Build tools
+target
+simple-binary-encoding
+src/main/resources/spot_latest.xml
