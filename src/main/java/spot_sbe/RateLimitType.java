@@ -6,6 +6,8 @@ public enum RateLimitType
 {
     RawRequests((short)0),
 
+    Connections((short)1),
+
     RequestWeight((short)2),
 
     Orders((short)3),
@@ -43,6 +45,7 @@ public enum RateLimitType
         switch (value)
         {
             case 0: return RawRequests;
+            case 1: return Connections;
             case 2: return RequestWeight;
             case 3: return Orders;
             case 255: return NULL_VAL;
