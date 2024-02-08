@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -16,6 +17,15 @@ import org.agrona.concurrent.UnsafeBuffer;
 import org.apache.commons.io.IOUtils;
 
 public class App {
+    private static void printResult(Object result, Optional<WebSocketResponse> webSocketResponse) throws IOException {
+        Object output = result;
+        if (webSocketResponse.isPresent()) {
+            webSocketResponse.get().result = Optional.of(result);
+            output = webSocketResponse.get();
+        }
+        System.out.println(serializeYaml(output));
+    }
+
     private static String serializeYaml(Object object) throws IOException {
         StringWriter writer = new StringWriter();
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
@@ -225,6 +235,35 @@ public class App {
         UnsafeBuffer buffer = new UnsafeBuffer(content);
         MessageHeaderDecoder headerDecoder = new MessageHeaderDecoder();
         headerDecoder.wrap(buffer, 0);
+
+        Optional<WebSocketResponse> webSocketResponse = Optional.empty();
+        if (headerDecoder.templateId() == WebSocketResponseDecoder.TEMPLATE_ID) {
+            int schemaId = headerDecoder.schemaId();
+            if (schemaId != WebSocketResponseDecoder.SCHEMA_ID) {
+                System.err.printf("Unexpected schema ID %d\n", schemaId);
+                System.exit(1);
+            }
+            WebSocketResponseDecoder decoder = new WebSocketResponseDecoder();
+            decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
+            if (decoder.sbeSchemaIdVersionDeprecated() == BoolEnum.True) {
+                System.out.println("Warning: sbe-sample-app is using a deprecated schema");
+            }
+            int status = decoder.status();
+            ArrayList<WebSocketResponse.RateLimit> rateLimits = new ArrayList<>();
+            WebSocketResponseDecoder.RateLimitsDecoder rateLimitsDecoder = decoder.rateLimits();
+            rateLimits.ensureCapacity(rateLimitsDecoder.count());
+            for (WebSocketResponseDecoder.RateLimitsDecoder dec : rateLimitsDecoder) {
+                rateLimits.add(new WebSocketResponse.RateLimit(
+                        dec.rateLimitType(), dec.interval(), dec.intervalNum(), dec.rateLimit(), dec.current()));
+            }
+            String id = decoder.id();
+            buffer = new UnsafeBuffer();
+            decoder.wrapResult(buffer);
+            headerDecoder = new MessageHeaderDecoder();
+            headerDecoder.wrap(buffer, 0);
+            webSocketResponse = Optional.of(new WebSocketResponse(status, rateLimits, id));
+        }
+
         if (headerDecoder.templateId() == ErrorResponseDecoder.TEMPLATE_ID) {
             // A separate "ErrorResponse" message is returned for errors and its format is expected to be backwards
             // compatible across all schema IDs.
@@ -232,18 +271,20 @@ public class App {
             decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
             Error error = new Error(decoder.code(), decoder.serverTime(), decoder.retryAfter(), decoder.msg());
             decoder.skipData();
-            System.out.println(serializeYaml(error));
+            printResult(error, webSocketResponse);
             return;
         }
-        int schemaId = headerDecoder.schemaId();
-        if (schemaId != ExchangeInfoResponseDecoder.SCHEMA_ID) {
-            System.err.printf("Unexpected schema ID %d\n", schemaId);
-            System.exit(1);
-        }
-        int version = headerDecoder.version();
-        if (version != ExchangeInfoResponseDecoder.SCHEMA_VERSION) {
-            System.out.printf("Warning: Unexpected version %d\n", version);
-            // Schemas with the same ID are expected to be backwards compatible.
+        if (!webSocketResponse.isPresent()) {
+            int schemaId = headerDecoder.schemaId();
+            if (schemaId != ExchangeInfoResponseDecoder.SCHEMA_ID) {
+                System.err.printf("Unexpected schema ID %d\n", schemaId);
+                System.exit(1);
+            }
+            int version = headerDecoder.version();
+            if (version != ExchangeInfoResponseDecoder.SCHEMA_VERSION) {
+                System.out.printf("Warning: Unexpected version %d\n", version);
+                // Schemas with the same ID are expected to be backwards compatible.
+            }
         }
         ExchangeInfoResponseDecoder decoder = new ExchangeInfoResponseDecoder();
         // Note that the following checks the template ID.
@@ -319,6 +360,6 @@ public class App {
             sors.add(new ExchangeInfo.Sor(symbols, sorsDecoder.baseAsset()));
         }
         ExchangeInfo exchangeInfo = new ExchangeInfo(rateLimits, exchangeFilters, symbolsInfo, sors);
-        System.out.println(serializeYaml(exchangeInfo));
+        printResult(exchangeInfo, webSocketResponse);
     }
 }
