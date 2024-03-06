@@ -42,6 +42,14 @@ public class App {
         return IOUtils.toByteArray(conn.getInputStream());
     }
 
+    private static Error decodeError(MessageHeaderDecoder headerDecoder, UnsafeBuffer buffer) {
+        ErrorResponseDecoder decoder = new ErrorResponseDecoder();
+        decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
+        Error error = new Error(decoder.code(), decoder.serverTime(), decoder.retryAfter(), decoder.msg());
+        decoder.skipData();
+        return error;
+    }
+
     private static void decodeExchangeFilter(
             MessageHeaderDecoder headerDecoder,
             UnsafeBuffer tempBuffer,
@@ -237,12 +245,26 @@ public class App {
         headerDecoder.wrap(buffer, 0);
 
         Optional<WebSocketResponse> webSocketResponse = Optional.empty();
+        if (headerDecoder.templateId() == ErrorResponseDecoder.TEMPLATE_ID) {
+            // A separate "ErrorResponse" message is returned for errors and its format is expected to be backwards
+            // compatible across all schema IDs.
+            Error error = decodeError(headerDecoder, buffer);
+            printResult(error, webSocketResponse);
+            return;
+        }
+
+        int schemaId = headerDecoder.schemaId();
+        if (schemaId != ExchangeInfoResponseDecoder.SCHEMA_ID) {
+            System.err.printf("Unexpected schema ID %d\n", schemaId);
+            System.exit(1);
+        }
+        int version = headerDecoder.version();
+        if (version != ExchangeInfoResponseDecoder.SCHEMA_VERSION) {
+            System.out.printf("Warning: Unexpected version %d\n", version);
+            // Schemas with the same ID are expected to be backwards compatible.
+        }
+
         if (headerDecoder.templateId() == WebSocketResponseDecoder.TEMPLATE_ID) {
-            int schemaId = headerDecoder.schemaId();
-            if (schemaId != WebSocketResponseDecoder.SCHEMA_ID) {
-                System.err.printf("Unexpected schema ID %d\n", schemaId);
-                System.exit(1);
-            }
             WebSocketResponseDecoder decoder = new WebSocketResponseDecoder();
             decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
             if (decoder.sbeSchemaIdVersionDeprecated() == BoolEnum.True) {
@@ -262,30 +284,14 @@ public class App {
             headerDecoder = new MessageHeaderDecoder();
             headerDecoder.wrap(buffer, 0);
             webSocketResponse = Optional.of(new WebSocketResponse(status, rateLimits, id));
+
+            if (headerDecoder.templateId() == ErrorResponseDecoder.TEMPLATE_ID) {
+                Error error = decodeError(headerDecoder, buffer);
+                printResult(error, webSocketResponse);
+                return;
+            }
         }
 
-        if (headerDecoder.templateId() == ErrorResponseDecoder.TEMPLATE_ID) {
-            // A separate "ErrorResponse" message is returned for errors and its format is expected to be backwards
-            // compatible across all schema IDs.
-            ErrorResponseDecoder decoder = new ErrorResponseDecoder();
-            decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
-            Error error = new Error(decoder.code(), decoder.serverTime(), decoder.retryAfter(), decoder.msg());
-            decoder.skipData();
-            printResult(error, webSocketResponse);
-            return;
-        }
-        if (!webSocketResponse.isPresent()) {
-            int schemaId = headerDecoder.schemaId();
-            if (schemaId != ExchangeInfoResponseDecoder.SCHEMA_ID) {
-                System.err.printf("Unexpected schema ID %d\n", schemaId);
-                System.exit(1);
-            }
-            int version = headerDecoder.version();
-            if (version != ExchangeInfoResponseDecoder.SCHEMA_VERSION) {
-                System.out.printf("Warning: Unexpected version %d\n", version);
-                // Schemas with the same ID are expected to be backwards compatible.
-            }
-        }
         ExchangeInfoResponseDecoder decoder = new ExchangeInfoResponseDecoder();
         // Note that the following checks the template ID.
         decoder.wrapAndApplyHeader(buffer, 0, headerDecoder);
