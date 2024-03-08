@@ -75,7 +75,7 @@ public class App {
                 break;
             }
             default: {
-                System.err.printf("Unexpected template ID: %d", headerDecoder.templateId());
+                System.err.printf("Unexpected exchange filter template ID: %d", headerDecoder.templateId());
                 System.exit(1);
             }
         }
@@ -220,7 +220,7 @@ public class App {
                 break;
             }
             default: {
-                System.err.printf("Unexpected template ID: %d", headerDecoder.templateId());
+                System.err.printf("Unexpected symbol filter template ID: %d", headerDecoder.templateId());
                 System.exit(1);
             }
         }
@@ -250,7 +250,7 @@ public class App {
             // compatible across all schema IDs.
             Error error = decodeError(headerDecoder, buffer);
             printResult(error, webSocketResponse);
-            return;
+            System.exit(1);
         }
 
         int schemaId = headerDecoder.schemaId();
@@ -288,8 +288,13 @@ public class App {
             if (headerDecoder.templateId() == ErrorResponseDecoder.TEMPLATE_ID) {
                 Error error = decodeError(headerDecoder, buffer);
                 printResult(error, webSocketResponse);
-                return;
+                System.exit(1);
             }
+        }
+
+        if (headerDecoder.templateId() != ExchangeInfoResponseDecoder.TEMPLATE_ID) {
+            System.err.printf("Unexpected template ID {}", headerDecoder.templateId());
+            System.exit(1);
         }
 
         ExchangeInfoResponseDecoder decoder = new ExchangeInfoResponseDecoder();
