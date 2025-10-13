@@ -8,6 +8,8 @@ public enum OrderSide
 
     Sell((short)1),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -42,6 +44,7 @@ public enum OrderSide
         {
             case 0: return Buy;
             case 1: return Sell;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

@@ -12,6 +12,10 @@ public enum SelfTradePreventionMode
 
     ExpireBoth((short)4),
 
+    Decrement((short)5),
+
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -48,6 +52,8 @@ public enum SelfTradePreventionMode
             case 2: return ExpireTaker;
             case 3: return ExpireMaker;
             case 4: return ExpireBoth;
+            case 5: return Decrement;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

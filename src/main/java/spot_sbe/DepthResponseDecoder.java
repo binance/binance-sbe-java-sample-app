@@ -8,14 +8,13 @@ public final class DepthResponseDecoder
 {
     public static final int BLOCK_LENGTH = 10;
     public static final int TEMPLATE_ID = 200;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final DepthResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class DepthResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class DepthResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class DepthResponseDecoder
 
     public DepthResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -182,7 +175,7 @@ public final class DepthResponseDecoder
 
     public long lastUpdateId()
     {
-        return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 0, BYTE_ORDER);
     }
 
 
@@ -332,8 +325,8 @@ public final class DepthResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public BidsDecoder next()
@@ -373,6 +366,11 @@ public final class DepthResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -442,7 +440,7 @@ public final class DepthResponseDecoder
 
         public long price()
         {
-            return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 0, BYTE_ORDER);
         }
 
 
@@ -493,7 +491,7 @@ public final class DepthResponseDecoder
 
         public long qty()
         {
-            return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 8, BYTE_ORDER);
         }
 
 
@@ -566,8 +564,8 @@ public final class DepthResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public AsksDecoder next()
@@ -607,6 +605,11 @@ public final class DepthResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -676,7 +679,7 @@ public final class DepthResponseDecoder
 
         public long price()
         {
-            return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 0, BYTE_ORDER);
         }
 
 
@@ -727,7 +730,7 @@ public final class DepthResponseDecoder
 
         public long qty()
         {
-            return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 8, BYTE_ORDER);
         }
 
 
@@ -764,7 +767,7 @@ public final class DepthResponseDecoder
         }
 
         final DepthResponseDecoder decoder = new DepthResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -777,7 +780,7 @@ public final class DepthResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[DepthResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

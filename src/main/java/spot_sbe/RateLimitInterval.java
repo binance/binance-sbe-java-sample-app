@@ -12,6 +12,8 @@ public enum RateLimitInterval
 
     Day((short)3),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -48,6 +50,7 @@ public enum RateLimitInterval
             case 1: return Minute;
             case 2: return Hour;
             case 3: return Day;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

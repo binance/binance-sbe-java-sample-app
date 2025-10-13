@@ -8,6 +8,8 @@ public enum AccountType
 
     Unknown((short)2),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -42,6 +44,7 @@ public enum AccountType
         {
             case 0: return Spot;
             case 2: return Unknown;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

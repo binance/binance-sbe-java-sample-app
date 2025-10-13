@@ -20,7 +20,11 @@ public enum OrderStatus
 
     ExpiredInMatch((short)9),
 
-    Unknown((short)254),
+    PendingNew((short)11),
+
+    Unknown((short)253),
+
+    NonRepresentable((short)254),
 
     /**
      * To be used to represent not present or null.
@@ -62,7 +66,9 @@ public enum OrderStatus
             case 5: return Rejected;
             case 6: return Expired;
             case 9: return ExpiredInMatch;
-            case 254: return Unknown;
+            case 11: return PendingNew;
+            case 253: return Unknown;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

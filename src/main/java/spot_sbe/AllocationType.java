@@ -8,6 +8,8 @@ public enum AllocationType
 
     Sor((short)2),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -42,6 +44,7 @@ public enum AllocationType
         {
             case 0: return Unknown;
             case 2: return Sor;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

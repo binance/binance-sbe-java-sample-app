@@ -8,14 +8,13 @@ public final class TradesResponseDecoder
 {
     public static final int BLOCK_LENGTH = 2;
     public static final int TEMPLATE_ID = 201;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final TradesResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class TradesResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class TradesResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class TradesResponseDecoder
 
     public TradesResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -281,8 +274,8 @@ public final class TradesResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public TradesDecoder next()
@@ -322,6 +315,11 @@ public final class TradesResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -391,7 +389,7 @@ public final class TradesResponseDecoder
 
         public long id()
         {
-            return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 0, BYTE_ORDER);
         }
 
 
@@ -442,7 +440,7 @@ public final class TradesResponseDecoder
 
         public long price()
         {
-            return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 8, BYTE_ORDER);
         }
 
 
@@ -493,7 +491,7 @@ public final class TradesResponseDecoder
 
         public long qty()
         {
-            return buffer.getLong(offset + 16, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 16, BYTE_ORDER);
         }
 
 
@@ -544,7 +542,7 @@ public final class TradesResponseDecoder
 
         public long quoteQty()
         {
-            return buffer.getLong(offset + 24, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 24, BYTE_ORDER);
         }
 
 
@@ -595,7 +593,7 @@ public final class TradesResponseDecoder
 
         public long time()
         {
-            return buffer.getLong(offset + 32, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 32, BYTE_ORDER);
         }
 
 
@@ -729,7 +727,7 @@ public final class TradesResponseDecoder
         }
 
         final TradesResponseDecoder decoder = new TradesResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -742,7 +740,7 @@ public final class TradesResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[TradesResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

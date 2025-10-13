@@ -8,14 +8,13 @@ public final class AccountOrderRateLimitResponseDecoder
 {
     public static final int BLOCK_LENGTH = 0;
     public static final int TEMPLATE_ID = 402;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final AccountOrderRateLimitResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class AccountOrderRateLimitResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class AccountOrderRateLimitResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class AccountOrderRateLimitResponseDecoder
 
     public AccountOrderRateLimitResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -179,8 +172,8 @@ public final class AccountOrderRateLimitResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public RateLimitsDecoder next()
@@ -220,6 +213,11 @@ public final class AccountOrderRateLimitResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -422,7 +420,7 @@ public final class AccountOrderRateLimitResponseDecoder
 
         public long rateLimit()
         {
-            return buffer.getLong(offset + 3, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 3, BYTE_ORDER);
         }
 
 
@@ -473,7 +471,7 @@ public final class AccountOrderRateLimitResponseDecoder
 
         public long numOrders()
         {
-            return buffer.getLong(offset + 11, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 11, BYTE_ORDER);
         }
 
 
@@ -519,7 +517,7 @@ public final class AccountOrderRateLimitResponseDecoder
         }
 
         final AccountOrderRateLimitResponseDecoder decoder = new AccountOrderRateLimitResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -532,7 +530,7 @@ public final class AccountOrderRateLimitResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[AccountOrderRateLimitResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

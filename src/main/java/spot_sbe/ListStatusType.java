@@ -10,6 +10,10 @@ public enum ListStatusType
 
     AllDone((short)2),
 
+    Updated((short)3),
+
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -45,6 +49,8 @@ public enum ListStatusType
             case 0: return Response;
             case 1: return ExecStarted;
             case 2: return AllDone;
+            case 3: return Updated;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

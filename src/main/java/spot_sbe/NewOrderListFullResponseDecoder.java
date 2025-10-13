@@ -9,14 +9,13 @@ public final class NewOrderListFullResponseDecoder
 {
     public static final int BLOCK_LENGTH = 21;
     public static final int TEMPLATE_ID = 311;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final NewOrderListFullResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class NewOrderListFullResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class NewOrderListFullResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class NewOrderListFullResponseDecoder
 
     public NewOrderListFullResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -183,7 +176,7 @@ public final class NewOrderListFullResponseDecoder
 
     public long orderListId()
     {
-        return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 0, BYTE_ORDER);
     }
 
 
@@ -357,7 +350,7 @@ public final class NewOrderListFullResponseDecoder
 
     public long transactionTime()
     {
-        return buffer.getLong(offset + 11, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 11, BYTE_ORDER);
     }
 
 
@@ -507,8 +500,8 @@ public final class NewOrderListFullResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (buffer.getShort(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (buffer.getShort(limit + 2, BYTE_ORDER) & 0xFFFF);
         }
 
         public OrdersDecoder next()
@@ -548,6 +541,11 @@ public final class NewOrderListFullResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -617,7 +615,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long orderId()
         {
-            return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 0, BYTE_ORDER);
         }
 
 
@@ -895,8 +893,8 @@ public final class NewOrderListFullResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (buffer.getShort(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (buffer.getShort(limit + 2, BYTE_ORDER) & 0xFFFF);
         }
 
         public OrderReportsDecoder next()
@@ -930,12 +928,17 @@ public final class NewOrderListFullResponseDecoder
 
         public static int sbeBlockLength()
         {
-            return 132;
+            return 151;
         }
 
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -1005,7 +1008,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long orderId()
         {
-            return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 0, BYTE_ORDER);
         }
 
 
@@ -1056,7 +1059,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long orderListId()
         {
-            return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 8, BYTE_ORDER);
         }
 
 
@@ -1107,7 +1110,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long transactTime()
         {
-            return buffer.getLong(offset + 16, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 16, BYTE_ORDER);
         }
 
 
@@ -1158,7 +1161,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long price()
         {
-            return buffer.getLong(offset + 24, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 24, BYTE_ORDER);
         }
 
 
@@ -1209,7 +1212,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long origQty()
         {
-            return buffer.getLong(offset + 32, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 32, BYTE_ORDER);
         }
 
 
@@ -1260,7 +1263,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long executedQty()
         {
-            return buffer.getLong(offset + 40, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 40, BYTE_ORDER);
         }
 
 
@@ -1311,7 +1314,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long cummulativeQuoteQty()
         {
-            return buffer.getLong(offset + 48, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 48, BYTE_ORDER);
         }
 
 
@@ -1526,7 +1529,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long stopPrice()
         {
-            return buffer.getLong(offset + 60, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 60, BYTE_ORDER);
         }
 
 
@@ -1577,7 +1580,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long trailingDelta()
         {
-            return buffer.getLong(offset + 68, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 68, BYTE_ORDER);
         }
 
 
@@ -1628,7 +1631,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long trailingTime()
         {
-            return buffer.getLong(offset + 76, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 76, BYTE_ORDER);
         }
 
 
@@ -1679,7 +1682,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long workingTime()
         {
-            return buffer.getLong(offset + 84, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 84, BYTE_ORDER);
         }
 
 
@@ -1730,7 +1733,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long icebergQty()
         {
-            return buffer.getLong(offset + 92, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 92, BYTE_ORDER);
         }
 
 
@@ -1781,7 +1784,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long strategyId()
         {
-            return buffer.getLong(offset + 100, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 100, BYTE_ORDER);
         }
 
 
@@ -1832,7 +1835,7 @@ public final class NewOrderListFullResponseDecoder
 
         public int strategyType()
         {
-            return buffer.getInt(offset + 108, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getInt(offset + 108, BYTE_ORDER);
         }
 
 
@@ -1860,7 +1863,7 @@ public final class NewOrderListFullResponseDecoder
         {
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
-                return "optional";
+                return "required";
             }
 
             return "";
@@ -1901,7 +1904,7 @@ public final class NewOrderListFullResponseDecoder
         {
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
-                return "optional";
+                return "required";
             }
 
             return "";
@@ -2006,7 +2009,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long tradeGroupId()
         {
-            return buffer.getLong(offset + 115, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 115, BYTE_ORDER);
         }
 
 
@@ -2034,7 +2037,7 @@ public final class NewOrderListFullResponseDecoder
         {
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
-                return "optional";
+                return "required";
             }
 
             return "";
@@ -2057,7 +2060,7 @@ public final class NewOrderListFullResponseDecoder
 
         public long preventedQuantity()
         {
-            return buffer.getLong(offset + 123, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 123, BYTE_ORDER);
         }
 
 
@@ -2085,7 +2088,7 @@ public final class NewOrderListFullResponseDecoder
         {
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
-                return "optional";
+                return "required";
             }
 
             return "";
@@ -2099,6 +2102,271 @@ public final class NewOrderListFullResponseDecoder
         public BoolEnum usedSor()
         {
             return BoolEnum.get(((short)(buffer.getByte(offset + 131) & 0xFF)));
+        }
+
+
+        public static int origQuoteOrderQtyId()
+        {
+            return 25;
+        }
+
+        public static int origQuoteOrderQtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int origQuoteOrderQtyEncodingOffset()
+        {
+            return 132;
+        }
+
+        public static int origQuoteOrderQtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String origQuoteOrderQtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long origQuoteOrderQtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long origQuoteOrderQtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long origQuoteOrderQtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long origQuoteOrderQty()
+        {
+            return buffer.getLong(offset + 132, BYTE_ORDER);
+        }
+
+
+        public static int pegPriceTypeId()
+        {
+            return 26;
+        }
+
+        public static int pegPriceTypeSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegPriceTypeEncodingOffset()
+        {
+            return 140;
+        }
+
+        public static int pegPriceTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegPriceTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public short pegPriceTypeRaw()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 140) & 0xFF));
+        }
+
+        public PegPriceType pegPriceType()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return PegPriceType.NULL_VAL;
+            }
+
+            return PegPriceType.get(((short)(buffer.getByte(offset + 140) & 0xFF)));
+        }
+
+
+        public static int pegOffsetTypeId()
+        {
+            return 27;
+        }
+
+        public static int pegOffsetTypeSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegOffsetTypeEncodingOffset()
+        {
+            return 141;
+        }
+
+        public static int pegOffsetTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegOffsetTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public short pegOffsetTypeRaw()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 141) & 0xFF));
+        }
+
+        public PegOffsetType pegOffsetType()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return PegOffsetType.NULL_VAL;
+            }
+
+            return PegOffsetType.get(((short)(buffer.getByte(offset + 141) & 0xFF)));
+        }
+
+
+        public static int pegOffsetValueId()
+        {
+            return 28;
+        }
+
+        public static int pegOffsetValueSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegOffsetValueEncodingOffset()
+        {
+            return 142;
+        }
+
+        public static int pegOffsetValueEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegOffsetValueMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static short pegOffsetValueNullValue()
+        {
+            return (short)255;
+        }
+
+        public static short pegOffsetValueMinValue()
+        {
+            return (short)0;
+        }
+
+        public static short pegOffsetValueMaxValue()
+        {
+            return (short)254;
+        }
+
+        public short pegOffsetValue()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 142) & 0xFF));
+        }
+
+
+        public static int peggedPriceId()
+        {
+            return 29;
+        }
+
+        public static int peggedPriceSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int peggedPriceEncodingOffset()
+        {
+            return 143;
+        }
+
+        public static int peggedPriceEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String peggedPriceMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long peggedPriceNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long peggedPriceMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long peggedPriceMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long peggedPrice()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return -9223372036854775808L;
+            }
+
+            return buffer.getLong(offset + 143, BYTE_ORDER);
         }
 
 
@@ -2144,8 +2412,8 @@ public final class NewOrderListFullResponseDecoder
                 index = 0;
                 final int limit = parentMessage.limit();
                 parentMessage.limit(limit + HEADER_SIZE);
-                blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-                count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
             }
 
             public FillsDecoder next()
@@ -2185,6 +2453,11 @@ public final class NewOrderListFullResponseDecoder
             public int actingBlockLength()
             {
                 return blockLength;
+            }
+
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
             }
 
             public int count()
@@ -2282,7 +2555,7 @@ public final class NewOrderListFullResponseDecoder
             {
                 if (MetaAttribute.PRESENCE == metaAttribute)
                 {
-                    return "optional";
+                    return "required";
                 }
 
                 return "";
@@ -2346,7 +2619,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long price()
             {
-                return buffer.getLong(offset + 2, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 2, BYTE_ORDER);
             }
 
 
@@ -2397,7 +2670,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long qty()
             {
-                return buffer.getLong(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 10, BYTE_ORDER);
             }
 
 
@@ -2448,7 +2721,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long commission()
             {
-                return buffer.getLong(offset + 18, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 18, BYTE_ORDER);
             }
 
 
@@ -2499,7 +2772,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long tradeId()
             {
-                return buffer.getLong(offset + 26, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 26, BYTE_ORDER);
             }
 
 
@@ -2550,7 +2823,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long allocId()
             {
-                return buffer.getLong(offset + 34, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 34, BYTE_ORDER);
             }
 
 
@@ -2738,8 +3011,8 @@ public final class NewOrderListFullResponseDecoder
                 index = 0;
                 final int limit = parentMessage.limit();
                 parentMessage.limit(limit + HEADER_SIZE);
-                blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-                count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
             }
 
             public PreventedMatchesDecoder next()
@@ -2779,6 +3052,11 @@ public final class NewOrderListFullResponseDecoder
             public int actingBlockLength()
             {
                 return blockLength;
+            }
+
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
             }
 
             public int count()
@@ -2848,7 +3126,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long preventedMatchId()
             {
-                return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 0, BYTE_ORDER);
             }
 
 
@@ -2899,7 +3177,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long makerOrderId()
             {
-                return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 8, BYTE_ORDER);
             }
 
 
@@ -2950,7 +3228,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long price()
             {
-                return buffer.getLong(offset + 16, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 16, BYTE_ORDER);
             }
 
 
@@ -3001,7 +3279,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long takerPreventedQuantity()
             {
-                return buffer.getLong(offset + 24, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 24, BYTE_ORDER);
             }
 
 
@@ -3052,7 +3330,7 @@ public final class NewOrderListFullResponseDecoder
 
             public long makerPreventedQuantity()
             {
-                return buffer.getLong(offset + 32, java.nio.ByteOrder.LITTLE_ENDIAN);
+                return buffer.getLong(offset + 32, BYTE_ORDER);
             }
 
 
@@ -3468,6 +3746,21 @@ public final class NewOrderListFullResponseDecoder
             builder.append("usedSor=");
             builder.append(this.usedSor());
             builder.append('|');
+            builder.append("origQuoteOrderQty=");
+            builder.append(this.origQuoteOrderQty());
+            builder.append('|');
+            builder.append("pegPriceType=");
+            builder.append(this.pegPriceType());
+            builder.append('|');
+            builder.append("pegOffsetType=");
+            builder.append(this.pegOffsetType());
+            builder.append('|');
+            builder.append("pegOffsetValue=");
+            builder.append(this.pegOffsetValue());
+            builder.append('|');
+            builder.append("peggedPrice=");
+            builder.append(this.peggedPrice());
+            builder.append('|');
             builder.append("fills=[");
             final int fillsOriginalOffset = fills.offset;
             final int fillsOriginalIndex = fills.index;
@@ -3743,7 +4036,7 @@ public final class NewOrderListFullResponseDecoder
         }
 
         final NewOrderListFullResponseDecoder decoder = new NewOrderListFullResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -3756,7 +4049,7 @@ public final class NewOrderListFullResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[NewOrderListFullResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

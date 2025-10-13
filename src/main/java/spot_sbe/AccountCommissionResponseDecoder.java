@@ -7,16 +7,15 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class AccountCommissionResponseDecoder
 {
-    public static final int BLOCK_LENGTH = 76;
+    public static final int BLOCK_LENGTH = 108;
     public static final int TEMPLATE_ID = 405;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final AccountCommissionResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class AccountCommissionResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class AccountCommissionResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class AccountCommissionResponseDecoder
 
     public AccountCommissionResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -285,7 +278,7 @@ public final class AccountCommissionResponseDecoder
 
     public long standardCommissionMaker()
     {
-        return buffer.getLong(offset + 2, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 2, BYTE_ORDER);
     }
 
 
@@ -336,7 +329,7 @@ public final class AccountCommissionResponseDecoder
 
     public long standardCommissionTaker()
     {
-        return buffer.getLong(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 10, BYTE_ORDER);
     }
 
 
@@ -387,7 +380,7 @@ public final class AccountCommissionResponseDecoder
 
     public long standardCommissionBuyer()
     {
-        return buffer.getLong(offset + 18, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 18, BYTE_ORDER);
     }
 
 
@@ -438,7 +431,7 @@ public final class AccountCommissionResponseDecoder
 
     public long standardCommissionSeller()
     {
-        return buffer.getLong(offset + 26, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 26, BYTE_ORDER);
     }
 
 
@@ -489,7 +482,7 @@ public final class AccountCommissionResponseDecoder
 
     public long taxCommissionMaker()
     {
-        return buffer.getLong(offset + 34, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 34, BYTE_ORDER);
     }
 
 
@@ -540,7 +533,7 @@ public final class AccountCommissionResponseDecoder
 
     public long taxCommissionTaker()
     {
-        return buffer.getLong(offset + 42, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 42, BYTE_ORDER);
     }
 
 
@@ -591,7 +584,7 @@ public final class AccountCommissionResponseDecoder
 
     public long taxCommissionBuyer()
     {
-        return buffer.getLong(offset + 50, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 50, BYTE_ORDER);
     }
 
 
@@ -642,7 +635,7 @@ public final class AccountCommissionResponseDecoder
 
     public long taxCommissionSeller()
     {
-        return buffer.getLong(offset + 58, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 58, BYTE_ORDER);
     }
 
 
@@ -775,7 +768,231 @@ public final class AccountCommissionResponseDecoder
 
     public long discount()
     {
-        return buffer.getLong(offset + 68, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 68, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionMakerId()
+    {
+        return 14;
+    }
+
+    public static int specialCommissionMakerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionMakerEncodingOffset()
+    {
+        return 76;
+    }
+
+    public static int specialCommissionMakerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionMakerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionMakerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionMakerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionMakerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionMaker()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 76, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionTakerId()
+    {
+        return 15;
+    }
+
+    public static int specialCommissionTakerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionTakerEncodingOffset()
+    {
+        return 84;
+    }
+
+    public static int specialCommissionTakerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionTakerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionTakerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionTakerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionTakerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionTaker()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 84, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionBuyerId()
+    {
+        return 16;
+    }
+
+    public static int specialCommissionBuyerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionBuyerEncodingOffset()
+    {
+        return 92;
+    }
+
+    public static int specialCommissionBuyerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionBuyerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionBuyerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionBuyerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionBuyerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionBuyer()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 92, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionSellerId()
+    {
+        return 17;
+    }
+
+    public static int specialCommissionSellerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionSellerEncodingOffset()
+    {
+        return 100;
+    }
+
+    public static int specialCommissionSellerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionSellerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionSellerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionSellerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionSellerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionSeller()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 100, BYTE_ORDER);
     }
 
 
@@ -983,7 +1200,7 @@ public final class AccountCommissionResponseDecoder
         }
 
         final AccountCommissionResponseDecoder decoder = new AccountCommissionResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -996,7 +1213,7 @@ public final class AccountCommissionResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[AccountCommissionResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");
@@ -1054,6 +1271,18 @@ public final class AccountCommissionResponseDecoder
         builder.append('|');
         builder.append("discount=");
         builder.append(this.discount());
+        builder.append('|');
+        builder.append("specialCommissionMaker=");
+        builder.append(this.specialCommissionMaker());
+        builder.append('|');
+        builder.append("specialCommissionTaker=");
+        builder.append(this.specialCommissionTaker());
+        builder.append('|');
+        builder.append("specialCommissionBuyer=");
+        builder.append(this.specialCommissionBuyer());
+        builder.append('|');
+        builder.append("specialCommissionSeller=");
+        builder.append(this.specialCommissionSeller());
         builder.append('|');
         builder.append("symbol=");
         builder.append('\'').append(symbol()).append('\'');

@@ -8,6 +8,8 @@ public enum OrderCapacity
 
     Agency((short)2),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -42,6 +44,7 @@ public enum OrderCapacity
         {
             case 1: return Principal;
             case 2: return Agency;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

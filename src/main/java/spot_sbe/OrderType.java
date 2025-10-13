@@ -18,6 +18,8 @@ public enum OrderType
 
     LimitMaker((short)6),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -57,6 +59,7 @@ public enum OrderType
             case 4: return TakeProfit;
             case 5: return TakeProfitLimit;
             case 6: return LimitMaker;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 
