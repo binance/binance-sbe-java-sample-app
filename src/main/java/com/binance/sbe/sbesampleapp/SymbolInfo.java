@@ -16,9 +16,12 @@ public class SymbolInfo {
 
     public final boolean icebergAllowed;
     public final boolean ocoAllowed;
+    public final boolean otoAllowed;
     public final boolean quoteOrderQtyMarketAllowed;
     public final boolean allowTrailingStop;
     public final boolean cancelReplaceAllowed;
+    public final boolean amendAllowed;
+    public final boolean pegInstructionsAllowed;
     public final boolean spotTradingAllowed;
     public final boolean marginTradingAllowed;
 
@@ -28,7 +31,7 @@ public class SymbolInfo {
             new ArrayList<>();
 
     public final ArrayList<Object> filters = new ArrayList<>();
-    public final ArrayList<String> permissions = new ArrayList<>();
+    public final ArrayList<ArrayList<String>> permissionSets = new ArrayList<>();
     public String symbol = "";
     public String baseAsset = "";
     public String quoteAsset = "";
@@ -42,13 +45,16 @@ public class SymbolInfo {
             OrderTypesDecoder orderTypesDecoder,
             BoolEnum icebergAllowed,
             BoolEnum ocoAllowed,
+            BoolEnum otoAllowed,
             BoolEnum quoteOrderQtyMarketAllowed,
             BoolEnum allowTrailingStop,
             BoolEnum cancelReplaceAllowed,
+            BoolEnum amendAllowed,
             BoolEnum spotTradingAllowed,
             BoolEnum marginTradingAllowed,
             SelfTradePreventionMode selfTradePreventionMode,
-            AllowedSelfTradePreventionModesDecoder allowedSelfTradePreventionModesDecoder) {
+            AllowedSelfTradePreventionModesDecoder allowedSelfTradePreventionModesDecoder,
+            BoolEnum pegInstructionsAllowed) {
         this.status = status;
         this.baseAssetPrecision = baseAssetPrecision;
         this.quoteAssetPrecision = quoteAssetPrecision;
@@ -78,9 +84,11 @@ public class SymbolInfo {
         }
         this.icebergAllowed = asBool(icebergAllowed);
         this.ocoAllowed = asBool(ocoAllowed);
+        this.otoAllowed = asBool(otoAllowed);
         this.quoteOrderQtyMarketAllowed = asBool(quoteOrderQtyMarketAllowed);
         this.allowTrailingStop = asBool(allowTrailingStop);
         this.cancelReplaceAllowed = asBool(cancelReplaceAllowed);
+        this.amendAllowed = asBool(amendAllowed);
         this.spotTradingAllowed = asBool(spotTradingAllowed);
         this.marginTradingAllowed = asBool(marginTradingAllowed);
         this.selfTradePreventionMode = selfTradePreventionMode;
@@ -97,5 +105,12 @@ public class SymbolInfo {
         if (allowedSelfTradePreventionModesDecoder.expireBoth()) {
             this.allowedSelfTradePreventionModes.add(SelfTradePreventionMode.ExpireBoth);
         }
+        if (allowedSelfTradePreventionModesDecoder.decrement()) {
+            this.allowedSelfTradePreventionModes.add(SelfTradePreventionMode.Decrement);
+        }
+        if (allowedSelfTradePreventionModesDecoder.nonRepresentable()) {
+            this.allowedSelfTradePreventionModes.add(SelfTradePreventionMode.NonRepresentable);
+        }
+        this.pegInstructionsAllowed = asBool(pegInstructionsAllowed);
     }
 }

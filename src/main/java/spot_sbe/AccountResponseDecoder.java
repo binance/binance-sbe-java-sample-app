@@ -9,14 +9,13 @@ public final class AccountResponseDecoder
 {
     public static final int BLOCK_LENGTH = 64;
     public static final int TEMPLATE_ID = 400;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final AccountResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class AccountResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class AccountResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class AccountResponseDecoder
 
     public AccountResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -234,7 +227,7 @@ public final class AccountResponseDecoder
 
     public long commissionRateMaker()
     {
-        return buffer.getLong(offset + 1, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 1, BYTE_ORDER);
     }
 
 
@@ -285,7 +278,7 @@ public final class AccountResponseDecoder
 
     public long commissionRateTaker()
     {
-        return buffer.getLong(offset + 9, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 9, BYTE_ORDER);
     }
 
 
@@ -336,7 +329,7 @@ public final class AccountResponseDecoder
 
     public long commissionRateBuyer()
     {
-        return buffer.getLong(offset + 17, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 17, BYTE_ORDER);
     }
 
 
@@ -387,7 +380,7 @@ public final class AccountResponseDecoder
 
     public long commissionRateSeller()
     {
-        return buffer.getLong(offset + 25, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 25, BYTE_ORDER);
     }
 
 
@@ -684,7 +677,7 @@ public final class AccountResponseDecoder
 
     public long updateTime()
     {
-        return buffer.getLong(offset + 39, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 39, BYTE_ORDER);
     }
 
 
@@ -776,7 +769,7 @@ public final class AccountResponseDecoder
 
     public long tradeGroupId()
     {
-        return buffer.getLong(offset + 48, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 48, BYTE_ORDER);
     }
 
 
@@ -827,7 +820,7 @@ public final class AccountResponseDecoder
 
     public long uid()
     {
-        return buffer.getLong(offset + 56, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 56, BYTE_ORDER);
     }
 
 
@@ -875,8 +868,8 @@ public final class AccountResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public BalancesDecoder next()
@@ -916,6 +909,11 @@ public final class AccountResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -1036,7 +1034,7 @@ public final class AccountResponseDecoder
 
         public long free()
         {
-            return buffer.getLong(offset + 1, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 1, BYTE_ORDER);
         }
 
 
@@ -1087,7 +1085,7 @@ public final class AccountResponseDecoder
 
         public long locked()
         {
-            return buffer.getLong(offset + 9, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 9, BYTE_ORDER);
         }
 
 
@@ -1265,8 +1263,8 @@ public final class AccountResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public PermissionsDecoder next()
@@ -1306,6 +1304,11 @@ public final class AccountResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -1493,8 +1496,8 @@ public final class AccountResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public ReduceOnlyAssetsDecoder next()
@@ -1534,6 +1537,11 @@ public final class AccountResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -1685,7 +1693,7 @@ public final class AccountResponseDecoder
         }
 
         final AccountResponseDecoder decoder = new AccountResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -1698,7 +1706,7 @@ public final class AccountResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[AccountResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

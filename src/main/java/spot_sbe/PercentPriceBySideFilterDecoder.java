@@ -8,14 +8,13 @@ public final class PercentPriceBySideFilterDecoder
 {
     public static final int BLOCK_LENGTH = 37;
     public static final int TEMPLATE_ID = 3;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final PercentPriceBySideFilterDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class PercentPriceBySideFilterDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class PercentPriceBySideFilterDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public PercentPriceBySideFilterDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -275,7 +268,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public long bidMultiplierUp()
     {
-        return buffer.getLong(offset + 1, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 1, BYTE_ORDER);
     }
 
 
@@ -326,7 +319,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public long bidMultiplierDown()
     {
-        return buffer.getLong(offset + 9, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 9, BYTE_ORDER);
     }
 
 
@@ -377,7 +370,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public long askMultiplierUp()
     {
-        return buffer.getLong(offset + 17, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 17, BYTE_ORDER);
     }
 
 
@@ -428,7 +421,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public long askMultiplierDown()
     {
-        return buffer.getLong(offset + 25, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 25, BYTE_ORDER);
     }
 
 
@@ -479,7 +472,7 @@ public final class PercentPriceBySideFilterDecoder
 
     public int avgPriceMins()
     {
-        return buffer.getInt(offset + 33, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getInt(offset + 33, BYTE_ORDER);
     }
 
 
@@ -491,7 +484,7 @@ public final class PercentPriceBySideFilterDecoder
         }
 
         final PercentPriceBySideFilterDecoder decoder = new PercentPriceBySideFilterDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -504,7 +497,7 @@ public final class PercentPriceBySideFilterDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[PercentPriceBySideFilter](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

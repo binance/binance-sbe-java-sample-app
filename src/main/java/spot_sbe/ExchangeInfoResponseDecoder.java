@@ -9,14 +9,13 @@ public final class ExchangeInfoResponseDecoder
 {
     public static final int BLOCK_LENGTH = 0;
     public static final int TEMPLATE_ID = 103;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final ExchangeInfoResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class ExchangeInfoResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class ExchangeInfoResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class ExchangeInfoResponseDecoder
 
     public ExchangeInfoResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -180,8 +173,8 @@ public final class ExchangeInfoResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public RateLimitsDecoder next()
@@ -221,6 +214,11 @@ public final class ExchangeInfoResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -423,7 +421,7 @@ public final class ExchangeInfoResponseDecoder
 
         public long rateLimit()
         {
-            return buffer.getLong(offset + 3, java.nio.ByteOrder.LITTLE_ENDIAN);
+            return buffer.getLong(offset + 3, BYTE_ORDER);
         }
 
 
@@ -502,8 +500,8 @@ public final class ExchangeInfoResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public ExchangeFiltersDecoder next()
@@ -543,6 +541,11 @@ public final class ExchangeInfoResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -692,13 +695,13 @@ public final class ExchangeInfoResponseDecoder
         private int offset;
         private int blockLength;
         private final FiltersDecoder filters;
-        private final PermissionsDecoder permissions;
+        private final PermissionSetsDecoder permissionSets;
 
         SymbolsDecoder(final ExchangeInfoResponseDecoder parentMessage)
         {
             this.parentMessage = parentMessage;
             filters = new FiltersDecoder(parentMessage);
-            permissions = new PermissionsDecoder(parentMessage);
+            permissionSets = new PermissionSetsDecoder(parentMessage);
         }
 
         public void wrap(final DirectBuffer buffer)
@@ -711,8 +714,8 @@ public final class ExchangeInfoResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public SymbolsDecoder next()
@@ -746,12 +749,17 @@ public final class ExchangeInfoResponseDecoder
 
         public static int sbeBlockLength()
         {
-            return 16;
+            return 19;
         }
 
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -1139,9 +1147,50 @@ public final class ExchangeInfoResponseDecoder
         }
 
 
-        public static int quoteOrderQtyMarketAllowedId()
+        public static int otoAllowedId()
         {
             return 9;
+        }
+
+        public static int otoAllowedSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int otoAllowedEncodingOffset()
+        {
+            return 9;
+        }
+
+        public static int otoAllowedEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String otoAllowedMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short otoAllowedRaw()
+        {
+            return ((short)(buffer.getByte(offset + 9) & 0xFF));
+        }
+
+        public BoolEnum otoAllowed()
+        {
+            return BoolEnum.get(((short)(buffer.getByte(offset + 9) & 0xFF)));
+        }
+
+
+        public static int quoteOrderQtyMarketAllowedId()
+        {
+            return 10;
         }
 
         public static int quoteOrderQtyMarketAllowedSinceVersion()
@@ -1151,7 +1200,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int quoteOrderQtyMarketAllowedEncodingOffset()
         {
-            return 9;
+            return 10;
         }
 
         public static int quoteOrderQtyMarketAllowedEncodingLength()
@@ -1171,18 +1220,18 @@ public final class ExchangeInfoResponseDecoder
 
         public short quoteOrderQtyMarketAllowedRaw()
         {
-            return ((short)(buffer.getByte(offset + 9) & 0xFF));
+            return ((short)(buffer.getByte(offset + 10) & 0xFF));
         }
 
         public BoolEnum quoteOrderQtyMarketAllowed()
         {
-            return BoolEnum.get(((short)(buffer.getByte(offset + 9) & 0xFF)));
+            return BoolEnum.get(((short)(buffer.getByte(offset + 10) & 0xFF)));
         }
 
 
         public static int allowTrailingStopId()
         {
-            return 10;
+            return 11;
         }
 
         public static int allowTrailingStopSinceVersion()
@@ -1192,7 +1241,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int allowTrailingStopEncodingOffset()
         {
-            return 10;
+            return 11;
         }
 
         public static int allowTrailingStopEncodingLength()
@@ -1212,18 +1261,18 @@ public final class ExchangeInfoResponseDecoder
 
         public short allowTrailingStopRaw()
         {
-            return ((short)(buffer.getByte(offset + 10) & 0xFF));
+            return ((short)(buffer.getByte(offset + 11) & 0xFF));
         }
 
         public BoolEnum allowTrailingStop()
         {
-            return BoolEnum.get(((short)(buffer.getByte(offset + 10) & 0xFF)));
+            return BoolEnum.get(((short)(buffer.getByte(offset + 11) & 0xFF)));
         }
 
 
         public static int cancelReplaceAllowedId()
         {
-            return 11;
+            return 12;
         }
 
         public static int cancelReplaceAllowedSinceVersion()
@@ -1233,7 +1282,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int cancelReplaceAllowedEncodingOffset()
         {
-            return 11;
+            return 12;
         }
 
         public static int cancelReplaceAllowedEncodingLength()
@@ -1253,18 +1302,59 @@ public final class ExchangeInfoResponseDecoder
 
         public short cancelReplaceAllowedRaw()
         {
-            return ((short)(buffer.getByte(offset + 11) & 0xFF));
+            return ((short)(buffer.getByte(offset + 12) & 0xFF));
         }
 
         public BoolEnum cancelReplaceAllowed()
         {
-            return BoolEnum.get(((short)(buffer.getByte(offset + 11) & 0xFF)));
+            return BoolEnum.get(((short)(buffer.getByte(offset + 12) & 0xFF)));
+        }
+
+
+        public static int amendAllowedId()
+        {
+            return 13;
+        }
+
+        public static int amendAllowedSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int amendAllowedEncodingOffset()
+        {
+            return 13;
+        }
+
+        public static int amendAllowedEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String amendAllowedMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short amendAllowedRaw()
+        {
+            return ((short)(buffer.getByte(offset + 13) & 0xFF));
+        }
+
+        public BoolEnum amendAllowed()
+        {
+            return BoolEnum.get(((short)(buffer.getByte(offset + 13) & 0xFF)));
         }
 
 
         public static int isSpotTradingAllowedId()
         {
-            return 12;
+            return 14;
         }
 
         public static int isSpotTradingAllowedSinceVersion()
@@ -1274,7 +1364,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int isSpotTradingAllowedEncodingOffset()
         {
-            return 12;
+            return 14;
         }
 
         public static int isSpotTradingAllowedEncodingLength()
@@ -1294,18 +1384,18 @@ public final class ExchangeInfoResponseDecoder
 
         public short isSpotTradingAllowedRaw()
         {
-            return ((short)(buffer.getByte(offset + 12) & 0xFF));
+            return ((short)(buffer.getByte(offset + 14) & 0xFF));
         }
 
         public BoolEnum isSpotTradingAllowed()
         {
-            return BoolEnum.get(((short)(buffer.getByte(offset + 12) & 0xFF)));
+            return BoolEnum.get(((short)(buffer.getByte(offset + 14) & 0xFF)));
         }
 
 
         public static int isMarginTradingAllowedId()
         {
-            return 13;
+            return 15;
         }
 
         public static int isMarginTradingAllowedSinceVersion()
@@ -1315,7 +1405,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int isMarginTradingAllowedEncodingOffset()
         {
-            return 13;
+            return 15;
         }
 
         public static int isMarginTradingAllowedEncodingLength()
@@ -1335,18 +1425,18 @@ public final class ExchangeInfoResponseDecoder
 
         public short isMarginTradingAllowedRaw()
         {
-            return ((short)(buffer.getByte(offset + 13) & 0xFF));
+            return ((short)(buffer.getByte(offset + 15) & 0xFF));
         }
 
         public BoolEnum isMarginTradingAllowed()
         {
-            return BoolEnum.get(((short)(buffer.getByte(offset + 13) & 0xFF)));
+            return BoolEnum.get(((short)(buffer.getByte(offset + 15) & 0xFF)));
         }
 
 
         public static int defaultSelfTradePreventionModeId()
         {
-            return 14;
+            return 16;
         }
 
         public static int defaultSelfTradePreventionModeSinceVersion()
@@ -1356,7 +1446,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int defaultSelfTradePreventionModeEncodingOffset()
         {
-            return 14;
+            return 16;
         }
 
         public static int defaultSelfTradePreventionModeEncodingLength()
@@ -1376,18 +1466,18 @@ public final class ExchangeInfoResponseDecoder
 
         public short defaultSelfTradePreventionModeRaw()
         {
-            return ((short)(buffer.getByte(offset + 14) & 0xFF));
+            return ((short)(buffer.getByte(offset + 16) & 0xFF));
         }
 
         public SelfTradePreventionMode defaultSelfTradePreventionMode()
         {
-            return SelfTradePreventionMode.get(((short)(buffer.getByte(offset + 14) & 0xFF)));
+            return SelfTradePreventionMode.get(((short)(buffer.getByte(offset + 16) & 0xFF)));
         }
 
 
         public static int allowedSelfTradePreventionModesId()
         {
-            return 15;
+            return 17;
         }
 
         public static int allowedSelfTradePreventionModesSinceVersion()
@@ -1397,7 +1487,7 @@ public final class ExchangeInfoResponseDecoder
 
         public static int allowedSelfTradePreventionModesEncodingOffset()
         {
-            return 15;
+            return 17;
         }
 
         public static int allowedSelfTradePreventionModesEncodingLength()
@@ -1419,9 +1509,60 @@ public final class ExchangeInfoResponseDecoder
 
         public AllowedSelfTradePreventionModesDecoder allowedSelfTradePreventionModes()
         {
-            allowedSelfTradePreventionModes.wrap(buffer, offset + 15);
+            allowedSelfTradePreventionModes.wrap(buffer, offset + 17);
             return allowedSelfTradePreventionModes;
         }
+
+        public static int pegInstructionsAllowedId()
+        {
+            return 18;
+        }
+
+        public static int pegInstructionsAllowedSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegInstructionsAllowedEncodingOffset()
+        {
+            return 18;
+        }
+
+        public static int pegInstructionsAllowedEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegInstructionsAllowedMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public short pegInstructionsAllowedRaw()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 18) & 0xFF));
+        }
+
+        public BoolEnum pegInstructionsAllowed()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return BoolEnum.NULL_VAL;
+            }
+
+            return BoolEnum.get(((short)(buffer.getByte(offset + 18) & 0xFF)));
+        }
+
 
         public static long filtersDecoderId()
         {
@@ -1465,8 +1606,8 @@ public final class ExchangeInfoResponseDecoder
                 index = 0;
                 final int limit = parentMessage.limit();
                 parentMessage.limit(limit + HEADER_SIZE);
-                blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-                count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
             }
 
             public FiltersDecoder next()
@@ -1506,6 +1647,11 @@ public final class ExchangeInfoResponseDecoder
             public int actingBlockLength()
             {
                 return blockLength;
+            }
+
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
             }
 
             public int count()
@@ -1626,24 +1772,24 @@ public final class ExchangeInfoResponseDecoder
             }
         }
 
-        public static long permissionsDecoderId()
+        public static long permissionSetsDecoderId()
         {
             return 101;
         }
 
-        public static int permissionsDecoderSinceVersion()
+        public static int permissionSetsDecoderSinceVersion()
         {
             return 0;
         }
 
-        public PermissionsDecoder permissions()
+        public PermissionSetsDecoder permissionSets()
         {
-            permissions.wrap(buffer);
-            return permissions;
+            permissionSets.wrap(buffer);
+            return permissionSets;
         }
 
-        public static final class PermissionsDecoder
-            implements Iterable<PermissionsDecoder>, java.util.Iterator<PermissionsDecoder>
+        public static final class PermissionSetsDecoder
+            implements Iterable<PermissionSetsDecoder>, java.util.Iterator<PermissionSetsDecoder>
         {
             public static final int HEADER_SIZE = 6;
             private final ExchangeInfoResponseDecoder parentMessage;
@@ -1652,10 +1798,12 @@ public final class ExchangeInfoResponseDecoder
             private int index;
             private int offset;
             private int blockLength;
+            private final PermissionsDecoder permissions;
 
-            PermissionsDecoder(final ExchangeInfoResponseDecoder parentMessage)
+            PermissionSetsDecoder(final ExchangeInfoResponseDecoder parentMessage)
             {
                 this.parentMessage = parentMessage;
+                permissions = new PermissionsDecoder(parentMessage);
             }
 
             public void wrap(final DirectBuffer buffer)
@@ -1668,11 +1816,11 @@ public final class ExchangeInfoResponseDecoder
                 index = 0;
                 final int limit = parentMessage.limit();
                 parentMessage.limit(limit + HEADER_SIZE);
-                blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-                count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
             }
 
-            public PermissionsDecoder next()
+            public PermissionSetsDecoder next()
             {
                 if (index >= count)
                 {
@@ -1711,12 +1859,17 @@ public final class ExchangeInfoResponseDecoder
                 return blockLength;
             }
 
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
+            }
+
             public int count()
             {
                 return count;
             }
 
-            public java.util.Iterator<PermissionsDecoder> iterator()
+            public java.util.Iterator<PermissionSetsDecoder> iterator()
             {
                 return this;
             }
@@ -1731,102 +1884,235 @@ public final class ExchangeInfoResponseDecoder
                 return index < count;
             }
 
-            public static int permissionId()
+            public static long permissionsDecoderId()
             {
-                return 200;
+                return 100;
             }
 
-            public static int permissionSinceVersion()
+            public static int permissionsDecoderSinceVersion()
             {
                 return 0;
             }
 
-            public static String permissionCharacterEncoding()
+            public PermissionsDecoder permissions()
             {
-                return java.nio.charset.StandardCharsets.UTF_8.name();
+                permissions.wrap(buffer);
+                return permissions;
             }
 
-            public static String permissionMetaAttribute(final MetaAttribute metaAttribute)
+            public static final class PermissionsDecoder
+                implements Iterable<PermissionsDecoder>, java.util.Iterator<PermissionsDecoder>
             {
-                if (MetaAttribute.PRESENCE == metaAttribute)
+                public static final int HEADER_SIZE = 6;
+                private final ExchangeInfoResponseDecoder parentMessage;
+                private DirectBuffer buffer;
+                private int count;
+                private int index;
+                private int offset;
+                private int blockLength;
+
+                PermissionsDecoder(final ExchangeInfoResponseDecoder parentMessage)
                 {
-                    return "required";
+                    this.parentMessage = parentMessage;
                 }
 
-                return "";
-            }
-
-            public static int permissionHeaderLength()
-            {
-                return 1;
-            }
-
-            public int permissionLength()
-            {
-                final int limit = parentMessage.limit();
-                return ((short)(buffer.getByte(limit) & 0xFF));
-            }
-
-            public int skipPermission()
-            {
-                final int headerLength = 1;
-                final int limit = parentMessage.limit();
-                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
-                final int dataOffset = limit + headerLength;
-                parentMessage.limit(dataOffset + dataLength);
-
-                return dataLength;
-            }
-
-            public int getPermission(final MutableDirectBuffer dst, final int dstOffset, final int length)
-            {
-                final int headerLength = 1;
-                final int limit = parentMessage.limit();
-                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
-                final int bytesCopied = Math.min(length, dataLength);
-                parentMessage.limit(limit + headerLength + dataLength);
-                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
-
-                return bytesCopied;
-            }
-
-            public int getPermission(final byte[] dst, final int dstOffset, final int length)
-            {
-                final int headerLength = 1;
-                final int limit = parentMessage.limit();
-                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
-                final int bytesCopied = Math.min(length, dataLength);
-                parentMessage.limit(limit + headerLength + dataLength);
-                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
-
-                return bytesCopied;
-            }
-
-            public void wrapPermission(final DirectBuffer wrapBuffer)
-            {
-                final int headerLength = 1;
-                final int limit = parentMessage.limit();
-                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
-                parentMessage.limit(limit + headerLength + dataLength);
-                wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
-            }
-
-            public String permission()
-            {
-                final int headerLength = 1;
-                final int limit = parentMessage.limit();
-                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
-                parentMessage.limit(limit + headerLength + dataLength);
-
-                if (0 == dataLength)
+                public void wrap(final DirectBuffer buffer)
                 {
+                    if (buffer != this.buffer)
+                    {
+                        this.buffer = buffer;
+                    }
+
+                    index = 0;
+                    final int limit = parentMessage.limit();
+                    parentMessage.limit(limit + HEADER_SIZE);
+                    blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                    count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
+                }
+
+                public PermissionsDecoder next()
+                {
+                    if (index >= count)
+                    {
+                        throw new java.util.NoSuchElementException();
+                    }
+
+                    offset = parentMessage.limit();
+                    parentMessage.limit(offset + blockLength);
+                    ++index;
+
+                    return this;
+                }
+
+                public static long countMinValue()
+                {
+                    return 0L;
+                }
+
+                public static long countMaxValue()
+                {
+                    return 2147483647L;
+                }
+
+                public static int sbeHeaderSize()
+                {
+                    return HEADER_SIZE;
+                }
+
+                public static int sbeBlockLength()
+                {
+                    return 0;
+                }
+
+                public int actingBlockLength()
+                {
+                    return blockLength;
+                }
+
+                public int actingVersion()
+                {
+                    return parentMessage.actingVersion;
+                }
+
+                public int count()
+                {
+                    return count;
+                }
+
+                public java.util.Iterator<PermissionsDecoder> iterator()
+                {
+                    return this;
+                }
+
+                public void remove()
+                {
+                    throw new UnsupportedOperationException();
+                }
+
+                public boolean hasNext()
+                {
+                    return index < count;
+                }
+
+                public static int permissionId()
+                {
+                    return 200;
+                }
+
+                public static int permissionSinceVersion()
+                {
+                    return 0;
+                }
+
+                public static String permissionCharacterEncoding()
+                {
+                    return java.nio.charset.StandardCharsets.UTF_8.name();
+                }
+
+                public static String permissionMetaAttribute(final MetaAttribute metaAttribute)
+                {
+                    if (MetaAttribute.PRESENCE == metaAttribute)
+                    {
+                        return "required";
+                    }
+
                     return "";
                 }
 
-                final byte[] tmp = new byte[dataLength];
-                buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+                public static int permissionHeaderLength()
+                {
+                    return 1;
+                }
 
-                return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+                public int permissionLength()
+                {
+                    final int limit = parentMessage.limit();
+                    return ((short)(buffer.getByte(limit) & 0xFF));
+                }
+
+                public int skipPermission()
+                {
+                    final int headerLength = 1;
+                    final int limit = parentMessage.limit();
+                    final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                    final int dataOffset = limit + headerLength;
+                    parentMessage.limit(dataOffset + dataLength);
+
+                    return dataLength;
+                }
+
+                public int getPermission(final MutableDirectBuffer dst, final int dstOffset, final int length)
+                {
+                    final int headerLength = 1;
+                    final int limit = parentMessage.limit();
+                    final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                    final int bytesCopied = Math.min(length, dataLength);
+                    parentMessage.limit(limit + headerLength + dataLength);
+                    buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                    return bytesCopied;
+                }
+
+                public int getPermission(final byte[] dst, final int dstOffset, final int length)
+                {
+                    final int headerLength = 1;
+                    final int limit = parentMessage.limit();
+                    final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                    final int bytesCopied = Math.min(length, dataLength);
+                    parentMessage.limit(limit + headerLength + dataLength);
+                    buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                    return bytesCopied;
+                }
+
+                public void wrapPermission(final DirectBuffer wrapBuffer)
+                {
+                    final int headerLength = 1;
+                    final int limit = parentMessage.limit();
+                    final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                    parentMessage.limit(limit + headerLength + dataLength);
+                    wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+                }
+
+                public String permission()
+                {
+                    final int headerLength = 1;
+                    final int limit = parentMessage.limit();
+                    final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                    parentMessage.limit(limit + headerLength + dataLength);
+
+                    if (0 == dataLength)
+                    {
+                        return "";
+                    }
+
+                    final byte[] tmp = new byte[dataLength];
+                    buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+                    return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+                }
+
+                public StringBuilder appendTo(final StringBuilder builder)
+                {
+                    if (null == buffer)
+                    {
+                        return builder;
+                    }
+
+                    builder.append('(');
+                    builder.append("permission=");
+                    builder.append('\'').append(permission()).append('\'');
+                    builder.append(')');
+
+                    return builder;
+                }
+                
+                public PermissionsDecoder sbeSkip()
+                {
+                    skipPermission();
+
+                    return this;
+                }
             }
 
             public StringBuilder appendTo(final StringBuilder builder)
@@ -1837,16 +2123,38 @@ public final class ExchangeInfoResponseDecoder
                 }
 
                 builder.append('(');
-                builder.append("permission=");
-                builder.append('\'').append(permission()).append('\'');
+                builder.append("permissions=[");
+                final int permissionsOriginalOffset = permissions.offset;
+                final int permissionsOriginalIndex = permissions.index;
+                final PermissionsDecoder permissions = this.permissions();
+                if (permissions.count() > 0)
+                {
+                    while (permissions.hasNext())
+                    {
+                        permissions.next().appendTo(builder);
+                        builder.append(',');
+                    }
+                    builder.setLength(builder.length() - 1);
+                }
+                permissions.offset = permissionsOriginalOffset;
+                permissions.index = permissionsOriginalIndex;
+                builder.append(']');
                 builder.append(')');
 
                 return builder;
             }
             
-            public PermissionsDecoder sbeSkip()
+            public PermissionSetsDecoder sbeSkip()
             {
-                skipPermission();
+                PermissionsDecoder permissions = this.permissions();
+                if (permissions.count() > 0)
+                {
+                    while (permissions.hasNext())
+                    {
+                        permissions.next();
+                        permissions.sbeSkip();
+                    }
+                }
 
                 return this;
             }
@@ -2170,13 +2478,24 @@ public final class ExchangeInfoResponseDecoder
             builder.append(this.quoteCommissionPrecision());
             builder.append('|');
             builder.append("orderTypes=");
-            this.orderTypes().appendTo(builder);
+            final OrderTypesDecoder orderTypes = this.orderTypes();
+            if (null != orderTypes)
+            {
+                orderTypes.appendTo(builder);
+            }
+            else
+            {
+                builder.append("null");
+            }
             builder.append('|');
             builder.append("icebergAllowed=");
             builder.append(this.icebergAllowed());
             builder.append('|');
             builder.append("ocoAllowed=");
             builder.append(this.ocoAllowed());
+            builder.append('|');
+            builder.append("otoAllowed=");
+            builder.append(this.otoAllowed());
             builder.append('|');
             builder.append("quoteOrderQtyMarketAllowed=");
             builder.append(this.quoteOrderQtyMarketAllowed());
@@ -2186,6 +2505,9 @@ public final class ExchangeInfoResponseDecoder
             builder.append('|');
             builder.append("cancelReplaceAllowed=");
             builder.append(this.cancelReplaceAllowed());
+            builder.append('|');
+            builder.append("amendAllowed=");
+            builder.append(this.amendAllowed());
             builder.append('|');
             builder.append("isSpotTradingAllowed=");
             builder.append(this.isSpotTradingAllowed());
@@ -2197,7 +2519,18 @@ public final class ExchangeInfoResponseDecoder
             builder.append(this.defaultSelfTradePreventionMode());
             builder.append('|');
             builder.append("allowedSelfTradePreventionModes=");
-            this.allowedSelfTradePreventionModes().appendTo(builder);
+            final AllowedSelfTradePreventionModesDecoder allowedSelfTradePreventionModes = this.allowedSelfTradePreventionModes();
+            if (null != allowedSelfTradePreventionModes)
+            {
+                allowedSelfTradePreventionModes.appendTo(builder);
+            }
+            else
+            {
+                builder.append("null");
+            }
+            builder.append('|');
+            builder.append("pegInstructionsAllowed=");
+            builder.append(this.pegInstructionsAllowed());
             builder.append('|');
             builder.append("filters=[");
             final int filtersOriginalOffset = filters.offset;
@@ -2216,21 +2549,21 @@ public final class ExchangeInfoResponseDecoder
             filters.index = filtersOriginalIndex;
             builder.append(']');
             builder.append('|');
-            builder.append("permissions=[");
-            final int permissionsOriginalOffset = permissions.offset;
-            final int permissionsOriginalIndex = permissions.index;
-            final PermissionsDecoder permissions = this.permissions();
-            if (permissions.count() > 0)
+            builder.append("permissionSets=[");
+            final int permissionSetsOriginalOffset = permissionSets.offset;
+            final int permissionSetsOriginalIndex = permissionSets.index;
+            final PermissionSetsDecoder permissionSets = this.permissionSets();
+            if (permissionSets.count() > 0)
             {
-                while (permissions.hasNext())
+                while (permissionSets.hasNext())
                 {
-                    permissions.next().appendTo(builder);
+                    permissionSets.next().appendTo(builder);
                     builder.append(',');
                 }
                 builder.setLength(builder.length() - 1);
             }
-            permissions.offset = permissionsOriginalOffset;
-            permissions.index = permissionsOriginalIndex;
+            permissionSets.offset = permissionSetsOriginalOffset;
+            permissionSets.index = permissionSetsOriginalIndex;
             builder.append(']');
             builder.append('|');
             builder.append("symbol=");
@@ -2257,13 +2590,13 @@ public final class ExchangeInfoResponseDecoder
                     filters.sbeSkip();
                 }
             }
-            PermissionsDecoder permissions = this.permissions();
-            if (permissions.count() > 0)
+            PermissionSetsDecoder permissionSets = this.permissionSets();
+            if (permissionSets.count() > 0)
             {
-                while (permissions.hasNext())
+                while (permissionSets.hasNext())
                 {
-                    permissions.next();
-                    permissions.sbeSkip();
+                    permissionSets.next();
+                    permissionSets.sbeSkip();
                 }
             }
             skipSymbol();
@@ -2320,8 +2653,8 @@ public final class ExchangeInfoResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public SorsDecoder next()
@@ -2361,6 +2694,11 @@ public final class ExchangeInfoResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -2425,8 +2763,8 @@ public final class ExchangeInfoResponseDecoder
                 index = 0;
                 final int limit = parentMessage.limit();
                 parentMessage.limit(limit + HEADER_SIZE);
-                blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-                count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
             }
 
             public SorSymbolsDecoder next()
@@ -2466,6 +2804,11 @@ public final class ExchangeInfoResponseDecoder
             public int actingBlockLength()
             {
                 return blockLength;
+            }
+
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
             }
 
             public int count()
@@ -2764,7 +3107,7 @@ public final class ExchangeInfoResponseDecoder
         }
 
         final ExchangeInfoResponseDecoder decoder = new ExchangeInfoResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -2777,7 +3120,7 @@ public final class ExchangeInfoResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[ExchangeInfoResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

@@ -12,6 +12,8 @@ public enum RateLimitType
 
     Orders((short)3),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -48,6 +50,7 @@ public enum RateLimitType
             case 1: return Connections;
             case 2: return RequestWeight;
             case 3: return Orders;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

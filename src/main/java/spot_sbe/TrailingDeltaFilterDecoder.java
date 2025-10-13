@@ -8,14 +8,13 @@ public final class TrailingDeltaFilterDecoder
 {
     public static final int BLOCK_LENGTH = 32;
     public static final int TEMPLATE_ID = 13;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final TrailingDeltaFilterDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class TrailingDeltaFilterDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class TrailingDeltaFilterDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class TrailingDeltaFilterDecoder
 
     public TrailingDeltaFilterDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -224,7 +217,7 @@ public final class TrailingDeltaFilterDecoder
 
     public long minTrailingAboveDelta()
     {
-        return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 0, BYTE_ORDER);
     }
 
 
@@ -275,7 +268,7 @@ public final class TrailingDeltaFilterDecoder
 
     public long maxTrailingAboveDelta()
     {
-        return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 8, BYTE_ORDER);
     }
 
 
@@ -326,7 +319,7 @@ public final class TrailingDeltaFilterDecoder
 
     public long minTrailingBelowDelta()
     {
-        return buffer.getLong(offset + 16, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 16, BYTE_ORDER);
     }
 
 
@@ -377,7 +370,7 @@ public final class TrailingDeltaFilterDecoder
 
     public long maxTrailingBelowDelta()
     {
-        return buffer.getLong(offset + 24, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 24, BYTE_ORDER);
     }
 
 
@@ -389,7 +382,7 @@ public final class TrailingDeltaFilterDecoder
         }
 
         final TrailingDeltaFilterDecoder decoder = new TrailingDeltaFilterDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -402,7 +395,7 @@ public final class TrailingDeltaFilterDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[TrailingDeltaFilter](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

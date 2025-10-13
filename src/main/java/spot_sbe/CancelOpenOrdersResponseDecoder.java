@@ -9,14 +9,13 @@ public final class CancelOpenOrdersResponseDecoder
 {
     public static final int BLOCK_LENGTH = 0;
     public static final int TEMPLATE_ID = 306;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final CancelOpenOrdersResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class CancelOpenOrdersResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class CancelOpenOrdersResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class CancelOpenOrdersResponseDecoder
 
     public CancelOpenOrdersResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -180,8 +173,8 @@ public final class CancelOpenOrdersResponseDecoder
             index = 0;
             final int limit = parentMessage.limit();
             parentMessage.limit(limit + HEADER_SIZE);
-            blockLength = (buffer.getShort(limit + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
-            count = (int)(buffer.getInt(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF_FFFFL);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (int)(buffer.getInt(limit + 2, BYTE_ORDER) & 0xFFFF_FFFFL);
         }
 
         public ResponsesDecoder next()
@@ -221,6 +214,11 @@ public final class CancelOpenOrdersResponseDecoder
         public int actingBlockLength()
         {
             return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
         }
 
         public int count()
@@ -271,14 +269,14 @@ public final class CancelOpenOrdersResponseDecoder
         public int responseLength()
         {
             final int limit = parentMessage.limit();
-            return (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            return (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         }
 
         public int skipResponse()
         {
             final int headerLength = 2;
             final int limit = parentMessage.limit();
-            final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
             final int dataOffset = limit + headerLength;
             parentMessage.limit(dataOffset + dataLength);
 
@@ -289,7 +287,7 @@ public final class CancelOpenOrdersResponseDecoder
         {
             final int headerLength = 2;
             final int limit = parentMessage.limit();
-            final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
             final int bytesCopied = Math.min(length, dataLength);
             parentMessage.limit(limit + headerLength + dataLength);
             buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
@@ -301,7 +299,7 @@ public final class CancelOpenOrdersResponseDecoder
         {
             final int headerLength = 2;
             final int limit = parentMessage.limit();
-            final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
             final int bytesCopied = Math.min(length, dataLength);
             parentMessage.limit(limit + headerLength + dataLength);
             buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
@@ -313,7 +311,7 @@ public final class CancelOpenOrdersResponseDecoder
         {
             final int headerLength = 2;
             final int limit = parentMessage.limit();
-            final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+            final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
             parentMessage.limit(limit + headerLength + dataLength);
             wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
         }
@@ -349,7 +347,7 @@ public final class CancelOpenOrdersResponseDecoder
         }
 
         final CancelOpenOrdersResponseDecoder decoder = new CancelOpenOrdersResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -362,7 +360,7 @@ public final class CancelOpenOrdersResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[CancelOpenOrdersResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

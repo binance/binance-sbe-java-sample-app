@@ -10,8 +10,8 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class VarStringDecoder
 {
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final int ENCODED_LENGTH = -1;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -87,7 +87,7 @@ public final class VarStringDecoder
 
     public int length()
     {
-        return (buffer.getShort(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        return (buffer.getShort(offset + 0, BYTE_ORDER) & 0xFFFF);
     }
 
 

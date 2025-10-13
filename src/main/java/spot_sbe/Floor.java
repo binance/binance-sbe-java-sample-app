@@ -10,6 +10,8 @@ public enum Floor
 
     Sor((short)3),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -45,6 +47,7 @@ public enum Floor
             case 1: return Exchange;
             case 2: return Broker;
             case 3: return Sor;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

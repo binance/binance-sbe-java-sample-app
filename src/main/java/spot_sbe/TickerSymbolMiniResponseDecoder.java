@@ -9,14 +9,13 @@ public final class TickerSymbolMiniResponseDecoder
 {
     public static final int BLOCK_LENGTH = 106;
     public static final int TEMPLATE_ID = 215;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final TickerSymbolMiniResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class TickerSymbolMiniResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class TickerSymbolMiniResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public TickerSymbolMiniResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -285,7 +278,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long openPrice()
     {
-        return buffer.getLong(offset + 2, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 2, BYTE_ORDER);
     }
 
 
@@ -336,7 +329,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long highPrice()
     {
-        return buffer.getLong(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 10, BYTE_ORDER);
     }
 
 
@@ -387,7 +380,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long lowPrice()
     {
-        return buffer.getLong(offset + 18, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 18, BYTE_ORDER);
     }
 
 
@@ -438,7 +431,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long lastPrice()
     {
-        return buffer.getLong(offset + 26, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 26, BYTE_ORDER);
     }
 
 
@@ -659,7 +652,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long openTime()
     {
-        return buffer.getLong(offset + 66, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 66, BYTE_ORDER);
     }
 
 
@@ -710,7 +703,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long closeTime()
     {
-        return buffer.getLong(offset + 74, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 74, BYTE_ORDER);
     }
 
 
@@ -761,7 +754,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long firstId()
     {
-        return buffer.getLong(offset + 82, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 82, BYTE_ORDER);
     }
 
 
@@ -812,7 +805,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long lastId()
     {
-        return buffer.getLong(offset + 90, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 90, BYTE_ORDER);
     }
 
 
@@ -863,7 +856,7 @@ public final class TickerSymbolMiniResponseDecoder
 
     public long numTrades()
     {
-        return buffer.getLong(offset + 98, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 98, BYTE_ORDER);
     }
 
 
@@ -973,7 +966,7 @@ public final class TickerSymbolMiniResponseDecoder
         }
 
         final TickerSymbolMiniResponseDecoder decoder = new TickerSymbolMiniResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -986,7 +979,7 @@ public final class TickerSymbolMiniResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[TickerSymbolMiniResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

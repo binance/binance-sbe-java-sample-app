@@ -7,16 +7,15 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class OrderTestWithCommissionsResponseDecoder
 {
-    public static final int BLOCK_LENGTH = 44;
+    public static final int BLOCK_LENGTH = 60;
     public static final int TEMPLATE_ID = 315;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final OrderTestWithCommissionsResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class OrderTestWithCommissionsResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class OrderTestWithCommissionsResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public OrderTestWithCommissionsResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -285,7 +278,7 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public long standardCommissionForOrderMaker()
     {
-        return buffer.getLong(offset + 2, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 2, BYTE_ORDER);
     }
 
 
@@ -336,7 +329,7 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public long standardCommissionForOrderTaker()
     {
-        return buffer.getLong(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 10, BYTE_ORDER);
     }
 
 
@@ -387,7 +380,7 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public long taxCommissionForOrderMaker()
     {
-        return buffer.getLong(offset + 18, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 18, BYTE_ORDER);
     }
 
 
@@ -438,7 +431,7 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public long taxCommissionForOrderTaker()
     {
-        return buffer.getLong(offset + 26, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 26, BYTE_ORDER);
     }
 
 
@@ -571,7 +564,119 @@ public final class OrderTestWithCommissionsResponseDecoder
 
     public long discount()
     {
-        return buffer.getLong(offset + 36, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 36, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionForOrderMakerId()
+    {
+        return 10;
+    }
+
+    public static int specialCommissionForOrderMakerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionForOrderMakerEncodingOffset()
+    {
+        return 44;
+    }
+
+    public static int specialCommissionForOrderMakerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionForOrderMakerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionForOrderMakerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionForOrderMakerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionForOrderMakerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionForOrderMaker()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 44, BYTE_ORDER);
+    }
+
+
+    public static int specialCommissionForOrderTakerId()
+    {
+        return 11;
+    }
+
+    public static int specialCommissionForOrderTakerSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int specialCommissionForOrderTakerEncodingOffset()
+    {
+        return 52;
+    }
+
+    public static int specialCommissionForOrderTakerEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String specialCommissionForOrderTakerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long specialCommissionForOrderTakerNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long specialCommissionForOrderTakerMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long specialCommissionForOrderTakerMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long specialCommissionForOrderTaker()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 52, BYTE_ORDER);
     }
 
 
@@ -681,7 +786,7 @@ public final class OrderTestWithCommissionsResponseDecoder
         }
 
         final OrderTestWithCommissionsResponseDecoder decoder = new OrderTestWithCommissionsResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -694,7 +799,7 @@ public final class OrderTestWithCommissionsResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[OrderTestWithCommissionsResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");
@@ -740,6 +845,12 @@ public final class OrderTestWithCommissionsResponseDecoder
         builder.append('|');
         builder.append("discount=");
         builder.append(this.discount());
+        builder.append('|');
+        builder.append("specialCommissionForOrderMaker=");
+        builder.append(this.specialCommissionForOrderMaker());
+        builder.append('|');
+        builder.append("specialCommissionForOrderTaker=");
+        builder.append(this.specialCommissionForOrderTaker());
         builder.append('|');
         builder.append("discountAsset=");
         builder.append('\'').append(discountAsset()).append('\'');

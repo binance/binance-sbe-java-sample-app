@@ -4,6 +4,7 @@ import static spot_sbe.ExchangeInfoResponseDecoder.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +14,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import spot_sbe.*;
+import spot_sbe.ExchangeInfoResponseDecoder.ExchangeFiltersDecoder;
+import spot_sbe.ExchangeInfoResponseDecoder.RateLimitsDecoder;
+import spot_sbe.ExchangeInfoResponseDecoder.SorsDecoder;
+import spot_sbe.ExchangeInfoResponseDecoder.SymbolsDecoder;
+import spot_sbe.ExchangeInfoResponseDecoder.SymbolsDecoder.PermissionSetsDecoder;
+import spot_sbe.ExchangeInfoResponseDecoder.SymbolsDecoder.PermissionSetsDecoder.PermissionsDecoder;
+
 import org.agrona.concurrent.UnsafeBuffer;
 import org.apache.commons.io.IOUtils;
 
@@ -72,6 +80,12 @@ public class App {
                         new ExchangeMaxNumIcebergOrdersFilterDecoder();
                 dec.wrapAndApplyHeader(tempBuffer, 0, headerDecoder);
                 exchangeFilters.add(new ExchangeInfo.ExchangeFilter<>(dec.filterType(), dec.maxNumIcebergOrders()));
+                break;
+            }
+            case ExchangeMaxNumOrderListsFilterDecoder.TEMPLATE_ID: {
+                ExchangeMaxNumOrderListsFilterDecoder dec = new ExchangeMaxNumOrderListsFilterDecoder();
+                dec.wrapAndApplyHeader(tempBuffer, 0, headerDecoder);
+                exchangeFilters.add(new ExchangeInfo.ExchangeFilter<>(dec.filterType(), dec.maxNumOrderLists()));
                 break;
             }
             default: {
@@ -172,10 +186,22 @@ public class App {
                                 dec.filterType(), dec.qtyExponent(), dec.minQty(), dec.maxQty(), dec.stepSize()));
                 break;
             }
+            case MaxNumOrderAmendsFilterDecoder.TEMPLATE_ID: {
+                MaxNumOrderAmendsFilterDecoder dec = new MaxNumOrderAmendsFilterDecoder();
+                dec.wrapAndApplyHeader(tempBuffer, 0, headerDecoder);
+                filters.add(new SymbolFilters.MaxNumOrderAmendsFilter(dec.filterType(), dec.maxNumOrderAmends()));
+                break;
+            }
             case MaxNumOrdersFilterDecoder.TEMPLATE_ID: {
                 MaxNumOrdersFilterDecoder dec = new MaxNumOrdersFilterDecoder();
                 dec.wrapAndApplyHeader(tempBuffer, 0, headerDecoder);
                 filters.add(new SymbolFilters.MaxNumOrdersFilter(dec.filterType(), dec.maxNumOrders()));
+                break;
+            }
+            case MaxNumOrderListsFilterDecoder.TEMPLATE_ID: {
+                MaxNumOrderListsFilterDecoder dec = new MaxNumOrderListsFilterDecoder();
+                dec.wrapAndApplyHeader(tempBuffer, 0, headerDecoder);
+                filters.add(new SymbolFilters.MaxNumOrderListsFilter(dec.filterType(), dec.maxNumOrderLists()));
                 break;
             }
             case MaxNumAlgoOrdersFilterDecoder.TEMPLATE_ID: {
@@ -331,13 +357,16 @@ public class App {
                             dec.orderTypes(),
                             dec.icebergAllowed(),
                             dec.ocoAllowed(),
+                            dec.otoAllowed(),
                             dec.quoteOrderQtyMarketAllowed(),
                             dec.allowTrailingStop(),
                             dec.cancelReplaceAllowed(),
+                            dec.amendAllowed(),
                             dec.isSpotTradingAllowed(),
                             dec.isMarginTradingAllowed(),
                             dec.defaultSelfTradePreventionMode(),
-                            dec.allowedSelfTradePreventionModes());
+                            dec.allowedSelfTradePreventionModes(),
+                            dec.pegInstructionsAllowed());
             SymbolsDecoder.FiltersDecoder filtersDecoder = symbolsDecoder.filters();
             symbolInfo.filters.ensureCapacity(filtersDecoder.count());
             for (SymbolsDecoder.FiltersDecoder filterDec : filtersDecoder) {
@@ -348,11 +377,19 @@ public class App {
             }
             symbolsInfo.add(symbolInfo);
 
-            SymbolsDecoder.PermissionsDecoder permissionsDecoder = symbolsDecoder.permissions();
-            symbolInfo.permissions.ensureCapacity(permissionsDecoder.count());
-            for (SymbolsDecoder.PermissionsDecoder permissionDec : permissionsDecoder) {
-                symbolInfo.permissions.add(permissionDec.permission());
+            ArrayList<ArrayList<String>> permissions_sets = new ArrayList<>();
+
+            PermissionSetsDecoder permissionSetsDecoder = symbolsDecoder.permissionSets();
+            for (PermissionSetsDecoder permissionSetDec : permissionSetsDecoder) {
+                ArrayList<String> permissionSet = new ArrayList<>();
+                PermissionsDecoder permissionsDecoder = permissionSetDec.permissions();
+                for (PermissionsDecoder permDec : permissionsDecoder) {
+                    permissionSet.add(permDec.permission());
+                }
+                permissions_sets.add(permissionSet);
             }
+
+            symbolInfo.permissionSets.addAll(permissions_sets);
             symbolInfo.symbol = symbolsDecoder.symbol();
             symbolInfo.baseAsset = symbolsDecoder.baseAsset();
             symbolInfo.quoteAsset = symbolsDecoder.quoteAsset();

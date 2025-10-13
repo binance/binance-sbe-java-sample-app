@@ -7,16 +7,15 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class WebSocketSessionLogonResponseDecoder
 {
-    public static final int BLOCK_LENGTH = 25;
+    public static final int BLOCK_LENGTH = 26;
     public static final int TEMPLATE_ID = 51;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final WebSocketSessionLogonResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class WebSocketSessionLogonResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class WebSocketSessionLogonResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class WebSocketSessionLogonResponseDecoder
 
     public WebSocketSessionLogonResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -183,7 +176,7 @@ public final class WebSocketSessionLogonResponseDecoder
 
     public long authorizedSince()
     {
-        return buffer.getLong(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 0, BYTE_ORDER);
     }
 
 
@@ -234,7 +227,7 @@ public final class WebSocketSessionLogonResponseDecoder
 
     public long connectedSince()
     {
-        return buffer.getLong(offset + 8, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 8, BYTE_ORDER);
     }
 
 
@@ -326,26 +319,67 @@ public final class WebSocketSessionLogonResponseDecoder
 
     public long serverTime()
     {
-        return buffer.getLong(offset + 17, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 17, BYTE_ORDER);
     }
 
 
-    public static int apiKeyId()
+    public static int userDataStreamId()
     {
-        return 200;
+        return 5;
     }
 
-    public static int apiKeySinceVersion()
+    public static int userDataStreamSinceVersion()
     {
         return 0;
     }
 
-    public static String apiKeyCharacterEncoding()
+    public static int userDataStreamEncodingOffset()
+    {
+        return 25;
+    }
+
+    public static int userDataStreamEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String userDataStreamMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public short userDataStreamRaw()
+    {
+        return ((short)(buffer.getByte(offset + 25) & 0xFF));
+    }
+
+    public BoolEnum userDataStream()
+    {
+        return BoolEnum.get(((short)(buffer.getByte(offset + 25) & 0xFF)));
+    }
+
+
+    public static int loggedOnApiKeyId()
+    {
+        return 200;
+    }
+
+    public static int loggedOnApiKeySinceVersion()
+    {
+        return 0;
+    }
+
+    public static String loggedOnApiKeyCharacterEncoding()
     {
         return java.nio.charset.StandardCharsets.UTF_8.name();
     }
 
-    public static String apiKeyMetaAttribute(final MetaAttribute metaAttribute)
+    public static String loggedOnApiKeyMetaAttribute(final MetaAttribute metaAttribute)
     {
         if (MetaAttribute.PRESENCE == metaAttribute)
         {
@@ -355,33 +389,33 @@ public final class WebSocketSessionLogonResponseDecoder
         return "";
     }
 
-    public static int apiKeyHeaderLength()
+    public static int loggedOnApiKeyHeaderLength()
     {
         return 2;
     }
 
-    public int apiKeyLength()
+    public int loggedOnApiKeyLength()
     {
         final int limit = parentMessage.limit();
-        return (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        return (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
     }
 
-    public int skipApiKey()
+    public int skipLoggedOnApiKey()
     {
         final int headerLength = 2;
         final int limit = parentMessage.limit();
-        final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         final int dataOffset = limit + headerLength;
         parentMessage.limit(dataOffset + dataLength);
 
         return dataLength;
     }
 
-    public int getApiKey(final MutableDirectBuffer dst, final int dstOffset, final int length)
+    public int getLoggedOnApiKey(final MutableDirectBuffer dst, final int dstOffset, final int length)
     {
         final int headerLength = 2;
         final int limit = parentMessage.limit();
-        final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         final int bytesCopied = Math.min(length, dataLength);
         parentMessage.limit(limit + headerLength + dataLength);
         buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
@@ -389,11 +423,11 @@ public final class WebSocketSessionLogonResponseDecoder
         return bytesCopied;
     }
 
-    public int getApiKey(final byte[] dst, final int dstOffset, final int length)
+    public int getLoggedOnApiKey(final byte[] dst, final int dstOffset, final int length)
     {
         final int headerLength = 2;
         final int limit = parentMessage.limit();
-        final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         final int bytesCopied = Math.min(length, dataLength);
         parentMessage.limit(limit + headerLength + dataLength);
         buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
@@ -401,20 +435,20 @@ public final class WebSocketSessionLogonResponseDecoder
         return bytesCopied;
     }
 
-    public void wrapApiKey(final DirectBuffer wrapBuffer)
+    public void wrapLoggedOnApiKey(final DirectBuffer wrapBuffer)
     {
         final int headerLength = 2;
         final int limit = parentMessage.limit();
-        final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         parentMessage.limit(limit + headerLength + dataLength);
         wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
     }
 
-    public String apiKey()
+    public String loggedOnApiKey()
     {
         final int headerLength = 2;
         final int limit = parentMessage.limit();
-        final int dataLength = (buffer.getShort(limit, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        final int dataLength = (buffer.getShort(limit, BYTE_ORDER) & 0xFFFF);
         parentMessage.limit(limit + headerLength + dataLength);
 
         if (0 == dataLength)
@@ -436,7 +470,7 @@ public final class WebSocketSessionLogonResponseDecoder
         }
 
         final WebSocketSessionLogonResponseDecoder decoder = new WebSocketSessionLogonResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -449,7 +483,7 @@ public final class WebSocketSessionLogonResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[WebSocketSessionLogonResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");
@@ -481,8 +515,11 @@ public final class WebSocketSessionLogonResponseDecoder
         builder.append("serverTime=");
         builder.append(this.serverTime());
         builder.append('|');
-        builder.append("apiKey=");
-        builder.append('\'').append(apiKey()).append('\'');
+        builder.append("userDataStream=");
+        builder.append(this.userDataStream());
+        builder.append('|');
+        builder.append("loggedOnApiKey=");
+        builder.append('\'').append(loggedOnApiKey()).append('\'');
 
         limit(originalLimit);
 
@@ -492,7 +529,7 @@ public final class WebSocketSessionLogonResponseDecoder
     public WebSocketSessionLogonResponseDecoder sbeSkip()
     {
         sbeRewind();
-        skipApiKey();
+        skipLoggedOnApiKey();
 
         return this;
     }

@@ -8,14 +8,13 @@ public final class NotionalFilterDecoder
 {
     public static final int BLOCK_LENGTH = 23;
     public static final int TEMPLATE_ID = 6;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final NotionalFilterDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class NotionalFilterDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class NotionalFilterDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class NotionalFilterDecoder
 
     public NotionalFilterDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -275,7 +268,7 @@ public final class NotionalFilterDecoder
 
     public long minNotional()
     {
-        return buffer.getLong(offset + 1, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 1, BYTE_ORDER);
     }
 
 
@@ -367,7 +360,7 @@ public final class NotionalFilterDecoder
 
     public long maxNotional()
     {
-        return buffer.getLong(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 10, BYTE_ORDER);
     }
 
 
@@ -459,7 +452,7 @@ public final class NotionalFilterDecoder
 
     public int avgPriceMins()
     {
-        return buffer.getInt(offset + 19, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getInt(offset + 19, BYTE_ORDER);
     }
 
 
@@ -471,7 +464,7 @@ public final class NotionalFilterDecoder
         }
 
         final NotionalFilterDecoder decoder = new NotionalFilterDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -484,7 +477,7 @@ public final class NotionalFilterDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[NotionalFilter](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

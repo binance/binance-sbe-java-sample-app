@@ -6,6 +6,10 @@ public enum ContingencyType
 {
     Oco((short)1),
 
+    Oto((short)2),
+
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -39,6 +43,8 @@ public enum ContingencyType
         switch (value)
         {
             case 1: return Oco;
+            case 2: return Oto;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

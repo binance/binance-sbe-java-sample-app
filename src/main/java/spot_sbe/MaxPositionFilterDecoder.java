@@ -8,14 +8,13 @@ public final class MaxPositionFilterDecoder
 {
     public static final int BLOCK_LENGTH = 9;
     public static final int TEMPLATE_ID = 12;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final MaxPositionFilterDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -51,11 +50,6 @@ public final class MaxPositionFilterDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -71,7 +65,6 @@ public final class MaxPositionFilterDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -102,7 +95,7 @@ public final class MaxPositionFilterDecoder
 
     public MaxPositionFilterDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -275,7 +268,7 @@ public final class MaxPositionFilterDecoder
 
     public long maxPosition()
     {
-        return buffer.getLong(offset + 1, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 1, BYTE_ORDER);
     }
 
 
@@ -287,7 +280,7 @@ public final class MaxPositionFilterDecoder
         }
 
         final MaxPositionFilterDecoder decoder = new MaxPositionFilterDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -300,7 +293,7 @@ public final class MaxPositionFilterDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[MaxPositionFilter](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

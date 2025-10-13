@@ -4,19 +4,15 @@ package spot_sbe;
 @SuppressWarnings("all")
 public enum SymbolStatus
 {
-    PreTrading((short)0),
+    Trading((short)0),
 
-    Trading((short)1),
+    EndOfDay((short)1),
 
-    PostTrading((short)2),
+    Halt((short)2),
 
-    EndOfDay((short)3),
+    Break((short)3),
 
-    Halt((short)4),
-
-    AuctionMatch((short)5),
-
-    Break((short)7),
+    NonRepresentable((short)254),
 
     /**
      * To be used to represent not present or null.
@@ -50,13 +46,11 @@ public enum SymbolStatus
     {
         switch (value)
         {
-            case 0: return PreTrading;
-            case 1: return Trading;
-            case 2: return PostTrading;
-            case 3: return EndOfDay;
-            case 4: return Halt;
-            case 5: return AuctionMatch;
-            case 7: return Break;
+            case 0: return Trading;
+            case 1: return EndOfDay;
+            case 2: return Halt;
+            case 3: return Break;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

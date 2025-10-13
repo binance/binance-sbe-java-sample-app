@@ -8,6 +8,8 @@ public enum MatchType
 
     OnePartyTradeReport((short)2),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -42,6 +44,7 @@ public enum MatchType
         {
             case 1: return AutoMatch;
             case 2: return OnePartyTradeReport;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

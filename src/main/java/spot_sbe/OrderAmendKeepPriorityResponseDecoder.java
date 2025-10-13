@@ -1,0 +1,4653 @@
+/* Generated SBE (Simple Binary Encoding) message codec. */
+package spot_sbe;
+
+import org.agrona.MutableDirectBuffer;
+import org.agrona.DirectBuffer;
+
+@SuppressWarnings("all")
+public final class OrderAmendKeepPriorityResponseDecoder
+{
+    public static final int BLOCK_LENGTH = 145;
+    public static final int TEMPLATE_ID = 317;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
+    public static final String SEMANTIC_VERSION = "5.2";
+    public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
+
+    private final OrderAmendKeepPriorityResponseDecoder parentMessage = this;
+    private DirectBuffer buffer;
+    private int offset;
+    private int limit;
+    int actingBlockLength;
+    int actingVersion;
+
+    public int sbeBlockLength()
+    {
+        return BLOCK_LENGTH;
+    }
+
+    public int sbeTemplateId()
+    {
+        return TEMPLATE_ID;
+    }
+
+    public int sbeSchemaId()
+    {
+        return SCHEMA_ID;
+    }
+
+    public int sbeSchemaVersion()
+    {
+        return SCHEMA_VERSION;
+    }
+
+    public String sbeSemanticType()
+    {
+        return "";
+    }
+
+    public DirectBuffer buffer()
+    {
+        return buffer;
+    }
+
+    public int offset()
+    {
+        return offset;
+    }
+
+    public OrderAmendKeepPriorityResponseDecoder wrap(
+        final DirectBuffer buffer,
+        final int offset,
+        final int actingBlockLength,
+        final int actingVersion)
+    {
+        if (buffer != this.buffer)
+        {
+            this.buffer = buffer;
+        }
+        this.offset = offset;
+        this.actingBlockLength = actingBlockLength;
+        this.actingVersion = actingVersion;
+        limit(offset + actingBlockLength);
+
+        return this;
+    }
+
+    public OrderAmendKeepPriorityResponseDecoder wrapAndApplyHeader(
+        final DirectBuffer buffer,
+        final int offset,
+        final MessageHeaderDecoder headerDecoder)
+    {
+        headerDecoder.wrap(buffer, offset);
+
+        final int templateId = headerDecoder.templateId();
+        if (TEMPLATE_ID != templateId)
+        {
+            throw new IllegalStateException("Invalid TEMPLATE_ID: " + templateId);
+        }
+
+        return wrap(
+            buffer,
+            offset + MessageHeaderDecoder.ENCODED_LENGTH,
+            headerDecoder.blockLength(),
+            headerDecoder.version());
+    }
+
+    public OrderAmendKeepPriorityResponseDecoder sbeRewind()
+    {
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
+    }
+
+    public int sbeDecodedLength()
+    {
+        final int currentLimit = limit();
+        sbeSkip();
+        final int decodedLength = encodedLength();
+        limit(currentLimit);
+
+        return decodedLength;
+    }
+
+    public int actingVersion()
+    {
+        return actingVersion;
+    }
+
+    public int encodedLength()
+    {
+        return limit - offset;
+    }
+
+    public int limit()
+    {
+        return limit;
+    }
+
+    public void limit(final int limit)
+    {
+        this.limit = limit;
+    }
+
+    public static int transactTimeId()
+    {
+        return 1;
+    }
+
+    public static int transactTimeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int transactTimeEncodingOffset()
+    {
+        return 0;
+    }
+
+    public static int transactTimeEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String transactTimeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long transactTimeNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long transactTimeMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long transactTimeMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long transactTime()
+    {
+        return buffer.getLong(offset + 0, BYTE_ORDER);
+    }
+
+
+    public static int executionIdId()
+    {
+        return 2;
+    }
+
+    public static int executionIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int executionIdEncodingOffset()
+    {
+        return 8;
+    }
+
+    public static int executionIdEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String executionIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long executionIdNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long executionIdMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long executionIdMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long executionId()
+    {
+        return buffer.getLong(offset + 8, BYTE_ORDER);
+    }
+
+
+    public static int priceExponentId()
+    {
+        return 3;
+    }
+
+    public static int priceExponentSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int priceExponentEncodingOffset()
+    {
+        return 16;
+    }
+
+    public static int priceExponentEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String priceExponentMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static byte priceExponentNullValue()
+    {
+        return (byte)-128;
+    }
+
+    public static byte priceExponentMinValue()
+    {
+        return (byte)-127;
+    }
+
+    public static byte priceExponentMaxValue()
+    {
+        return (byte)127;
+    }
+
+    public byte priceExponent()
+    {
+        return buffer.getByte(offset + 16);
+    }
+
+
+    public static int qtyExponentId()
+    {
+        return 4;
+    }
+
+    public static int qtyExponentSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int qtyExponentEncodingOffset()
+    {
+        return 17;
+    }
+
+    public static int qtyExponentEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String qtyExponentMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static byte qtyExponentNullValue()
+    {
+        return (byte)-128;
+    }
+
+    public static byte qtyExponentMinValue()
+    {
+        return (byte)-127;
+    }
+
+    public static byte qtyExponentMaxValue()
+    {
+        return (byte)127;
+    }
+
+    public byte qtyExponent()
+    {
+        return buffer.getByte(offset + 17);
+    }
+
+
+    public static int orderIdId()
+    {
+        return 5;
+    }
+
+    public static int orderIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int orderIdEncodingOffset()
+    {
+        return 18;
+    }
+
+    public static int orderIdEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String orderIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long orderIdNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long orderIdMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long orderIdMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long orderId()
+    {
+        return buffer.getLong(offset + 18, BYTE_ORDER);
+    }
+
+
+    public static int orderListIdId()
+    {
+        return 6;
+    }
+
+    public static int orderListIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int orderListIdEncodingOffset()
+    {
+        return 26;
+    }
+
+    public static int orderListIdEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String orderListIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long orderListIdNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long orderListIdMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long orderListIdMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long orderListId()
+    {
+        return buffer.getLong(offset + 26, BYTE_ORDER);
+    }
+
+
+    public static int priceId()
+    {
+        return 7;
+    }
+
+    public static int priceSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int priceEncodingOffset()
+    {
+        return 34;
+    }
+
+    public static int priceEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String priceMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long priceNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long priceMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long priceMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long price()
+    {
+        return buffer.getLong(offset + 34, BYTE_ORDER);
+    }
+
+
+    public static int qtyId()
+    {
+        return 8;
+    }
+
+    public static int qtySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int qtyEncodingOffset()
+    {
+        return 42;
+    }
+
+    public static int qtyEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String qtyMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long qtyNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long qtyMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long qtyMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long qty()
+    {
+        return buffer.getLong(offset + 42, BYTE_ORDER);
+    }
+
+
+    public static int executedQtyId()
+    {
+        return 9;
+    }
+
+    public static int executedQtySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int executedQtyEncodingOffset()
+    {
+        return 50;
+    }
+
+    public static int executedQtyEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String executedQtyMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long executedQtyNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long executedQtyMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long executedQtyMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long executedQty()
+    {
+        return buffer.getLong(offset + 50, BYTE_ORDER);
+    }
+
+
+    public static int preventedQtyId()
+    {
+        return 10;
+    }
+
+    public static int preventedQtySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int preventedQtyEncodingOffset()
+    {
+        return 58;
+    }
+
+    public static int preventedQtyEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String preventedQtyMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long preventedQtyNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long preventedQtyMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long preventedQtyMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long preventedQty()
+    {
+        return buffer.getLong(offset + 58, BYTE_ORDER);
+    }
+
+
+    public static int cumulativeQuoteQtyId()
+    {
+        return 11;
+    }
+
+    public static int cumulativeQuoteQtySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int cumulativeQuoteQtyEncodingOffset()
+    {
+        return 66;
+    }
+
+    public static int cumulativeQuoteQtyEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String cumulativeQuoteQtyMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static long cumulativeQuoteQtyNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long cumulativeQuoteQtyMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long cumulativeQuoteQtyMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long cumulativeQuoteQty()
+    {
+        return buffer.getLong(offset + 66, BYTE_ORDER);
+    }
+
+
+    public static int statusId()
+    {
+        return 12;
+    }
+
+    public static int statusSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int statusEncodingOffset()
+    {
+        return 74;
+    }
+
+    public static int statusEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String statusMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short statusRaw()
+    {
+        return ((short)(buffer.getByte(offset + 74) & 0xFF));
+    }
+
+    public OrderStatus status()
+    {
+        return OrderStatus.get(((short)(buffer.getByte(offset + 74) & 0xFF)));
+    }
+
+
+    public static int timeInForceId()
+    {
+        return 13;
+    }
+
+    public static int timeInForceSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int timeInForceEncodingOffset()
+    {
+        return 75;
+    }
+
+    public static int timeInForceEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String timeInForceMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short timeInForceRaw()
+    {
+        return ((short)(buffer.getByte(offset + 75) & 0xFF));
+    }
+
+    public TimeInForce timeInForce()
+    {
+        return TimeInForce.get(((short)(buffer.getByte(offset + 75) & 0xFF)));
+    }
+
+
+    public static int orderTypeId()
+    {
+        return 14;
+    }
+
+    public static int orderTypeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int orderTypeEncodingOffset()
+    {
+        return 76;
+    }
+
+    public static int orderTypeEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String orderTypeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short orderTypeRaw()
+    {
+        return ((short)(buffer.getByte(offset + 76) & 0xFF));
+    }
+
+    public OrderType orderType()
+    {
+        return OrderType.get(((short)(buffer.getByte(offset + 76) & 0xFF)));
+    }
+
+
+    public static int sideId()
+    {
+        return 15;
+    }
+
+    public static int sideSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int sideEncodingOffset()
+    {
+        return 77;
+    }
+
+    public static int sideEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String sideMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short sideRaw()
+    {
+        return ((short)(buffer.getByte(offset + 77) & 0xFF));
+    }
+
+    public OrderSide side()
+    {
+        return OrderSide.get(((short)(buffer.getByte(offset + 77) & 0xFF)));
+    }
+
+
+    public static int stopPriceId()
+    {
+        return 16;
+    }
+
+    public static int stopPriceSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int stopPriceEncodingOffset()
+    {
+        return 78;
+    }
+
+    public static int stopPriceEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String stopPriceMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long stopPriceNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long stopPriceMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long stopPriceMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long stopPrice()
+    {
+        return buffer.getLong(offset + 78, BYTE_ORDER);
+    }
+
+
+    public static int trailingDeltaId()
+    {
+        return 17;
+    }
+
+    public static int trailingDeltaSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int trailingDeltaEncodingOffset()
+    {
+        return 86;
+    }
+
+    public static int trailingDeltaEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String trailingDeltaMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long trailingDeltaNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long trailingDeltaMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long trailingDeltaMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long trailingDelta()
+    {
+        return buffer.getLong(offset + 86, BYTE_ORDER);
+    }
+
+
+    public static int trailingTimeId()
+    {
+        return 18;
+    }
+
+    public static int trailingTimeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int trailingTimeEncodingOffset()
+    {
+        return 94;
+    }
+
+    public static int trailingTimeEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String trailingTimeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long trailingTimeNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long trailingTimeMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long trailingTimeMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long trailingTime()
+    {
+        return buffer.getLong(offset + 94, BYTE_ORDER);
+    }
+
+
+    public static int icebergQtyId()
+    {
+        return 19;
+    }
+
+    public static int icebergQtySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int icebergQtyEncodingOffset()
+    {
+        return 102;
+    }
+
+    public static int icebergQtyEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String icebergQtyMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long icebergQtyNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long icebergQtyMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long icebergQtyMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long icebergQty()
+    {
+        return buffer.getLong(offset + 102, BYTE_ORDER);
+    }
+
+
+    public static int workingTimeId()
+    {
+        return 20;
+    }
+
+    public static int workingTimeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int workingTimeEncodingOffset()
+    {
+        return 110;
+    }
+
+    public static int workingTimeEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String workingTimeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long workingTimeNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long workingTimeMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long workingTimeMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long workingTime()
+    {
+        return buffer.getLong(offset + 110, BYTE_ORDER);
+    }
+
+
+    public static int strategyIdId()
+    {
+        return 21;
+    }
+
+    public static int strategyIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int strategyIdEncodingOffset()
+    {
+        return 118;
+    }
+
+    public static int strategyIdEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String strategyIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long strategyIdNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long strategyIdMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long strategyIdMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long strategyId()
+    {
+        return buffer.getLong(offset + 118, BYTE_ORDER);
+    }
+
+
+    public static int strategyTypeId()
+    {
+        return 22;
+    }
+
+    public static int strategyTypeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int strategyTypeEncodingOffset()
+    {
+        return 126;
+    }
+
+    public static int strategyTypeEncodingLength()
+    {
+        return 4;
+    }
+
+    public static String strategyTypeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static int strategyTypeNullValue()
+    {
+        return -2147483648;
+    }
+
+    public static int strategyTypeMinValue()
+    {
+        return -2147483647;
+    }
+
+    public static int strategyTypeMaxValue()
+    {
+        return 2147483647;
+    }
+
+    public int strategyType()
+    {
+        return buffer.getInt(offset + 126, BYTE_ORDER);
+    }
+
+
+    public static int orderCapacityId()
+    {
+        return 23;
+    }
+
+    public static int orderCapacitySinceVersion()
+    {
+        return 0;
+    }
+
+    public static int orderCapacityEncodingOffset()
+    {
+        return 130;
+    }
+
+    public static int orderCapacityEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String orderCapacityMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short orderCapacityRaw()
+    {
+        return ((short)(buffer.getByte(offset + 130) & 0xFF));
+    }
+
+    public OrderCapacity orderCapacity()
+    {
+        return OrderCapacity.get(((short)(buffer.getByte(offset + 130) & 0xFF)));
+    }
+
+
+    public static int workingFloorId()
+    {
+        return 24;
+    }
+
+    public static int workingFloorSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int workingFloorEncodingOffset()
+    {
+        return 131;
+    }
+
+    public static int workingFloorEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String workingFloorMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short workingFloorRaw()
+    {
+        return ((short)(buffer.getByte(offset + 131) & 0xFF));
+    }
+
+    public Floor workingFloor()
+    {
+        return Floor.get(((short)(buffer.getByte(offset + 131) & 0xFF)));
+    }
+
+
+    public static int selfTradePreventionModeId()
+    {
+        return 25;
+    }
+
+    public static int selfTradePreventionModeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int selfTradePreventionModeEncodingOffset()
+    {
+        return 132;
+    }
+
+    public static int selfTradePreventionModeEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String selfTradePreventionModeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short selfTradePreventionModeRaw()
+    {
+        return ((short)(buffer.getByte(offset + 132) & 0xFF));
+    }
+
+    public SelfTradePreventionMode selfTradePreventionMode()
+    {
+        return SelfTradePreventionMode.get(((short)(buffer.getByte(offset + 132) & 0xFF)));
+    }
+
+
+    public static int usedSorId()
+    {
+        return 26;
+    }
+
+    public static int usedSorSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int usedSorEncodingOffset()
+    {
+        return 133;
+    }
+
+    public static int usedSorEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String usedSorMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public short usedSorRaw()
+    {
+        return ((short)(buffer.getByte(offset + 133) & 0xFF));
+    }
+
+    public BoolEnum usedSor()
+    {
+        return BoolEnum.get(((short)(buffer.getByte(offset + 133) & 0xFF)));
+    }
+
+
+    public static int pegPriceTypeId()
+    {
+        return 27;
+    }
+
+    public static int pegPriceTypeSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int pegPriceTypeEncodingOffset()
+    {
+        return 134;
+    }
+
+    public static int pegPriceTypeEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String pegPriceTypeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public short pegPriceTypeRaw()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return (short)255;
+        }
+
+        return ((short)(buffer.getByte(offset + 134) & 0xFF));
+    }
+
+    public PegPriceType pegPriceType()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return PegPriceType.NULL_VAL;
+        }
+
+        return PegPriceType.get(((short)(buffer.getByte(offset + 134) & 0xFF)));
+    }
+
+
+    public static int pegOffsetTypeId()
+    {
+        return 28;
+    }
+
+    public static int pegOffsetTypeSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int pegOffsetTypeEncodingOffset()
+    {
+        return 135;
+    }
+
+    public static int pegOffsetTypeEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String pegOffsetTypeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public short pegOffsetTypeRaw()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return (short)255;
+        }
+
+        return ((short)(buffer.getByte(offset + 135) & 0xFF));
+    }
+
+    public PegOffsetType pegOffsetType()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return PegOffsetType.NULL_VAL;
+        }
+
+        return PegOffsetType.get(((short)(buffer.getByte(offset + 135) & 0xFF)));
+    }
+
+
+    public static int pegOffsetValueId()
+    {
+        return 29;
+    }
+
+    public static int pegOffsetValueSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int pegOffsetValueEncodingOffset()
+    {
+        return 136;
+    }
+
+    public static int pegOffsetValueEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String pegOffsetValueMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static short pegOffsetValueNullValue()
+    {
+        return (short)255;
+    }
+
+    public static short pegOffsetValueMinValue()
+    {
+        return (short)0;
+    }
+
+    public static short pegOffsetValueMaxValue()
+    {
+        return (short)254;
+    }
+
+    public short pegOffsetValue()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return (short)255;
+        }
+
+        return ((short)(buffer.getByte(offset + 136) & 0xFF));
+    }
+
+
+    public static int peggedPriceId()
+    {
+        return 30;
+    }
+
+    public static int peggedPriceSinceVersion()
+    {
+        return 1;
+    }
+
+    public static int peggedPriceEncodingOffset()
+    {
+        return 137;
+    }
+
+    public static int peggedPriceEncodingLength()
+    {
+        return 8;
+    }
+
+    public static String peggedPriceMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public static long peggedPriceNullValue()
+    {
+        return -9223372036854775808L;
+    }
+
+    public static long peggedPriceMinValue()
+    {
+        return -9223372036854775807L;
+    }
+
+    public static long peggedPriceMaxValue()
+    {
+        return 9223372036854775807L;
+    }
+
+    public long peggedPrice()
+    {
+        if (parentMessage.actingVersion < 1)
+        {
+            return -9223372036854775808L;
+        }
+
+        return buffer.getLong(offset + 137, BYTE_ORDER);
+    }
+
+
+    private final ListStatusDecoder listStatus = new ListStatusDecoder(this);
+
+    public static long listStatusDecoderId()
+    {
+        return 101;
+    }
+
+    public static int listStatusDecoderSinceVersion()
+    {
+        return 0;
+    }
+
+    public ListStatusDecoder listStatus()
+    {
+        listStatus.wrap(buffer);
+        return listStatus;
+    }
+
+    public static final class ListStatusDecoder
+        implements Iterable<ListStatusDecoder>, java.util.Iterator<ListStatusDecoder>
+    {
+        public static final int HEADER_SIZE = 4;
+        private final OrderAmendKeepPriorityResponseDecoder parentMessage;
+        private DirectBuffer buffer;
+        private int count;
+        private int index;
+        private int offset;
+        private int blockLength;
+        private final OrdersDecoder orders;
+
+        ListStatusDecoder(final OrderAmendKeepPriorityResponseDecoder parentMessage)
+        {
+            this.parentMessage = parentMessage;
+            orders = new OrdersDecoder(parentMessage);
+        }
+
+        public void wrap(final DirectBuffer buffer)
+        {
+            if (buffer != this.buffer)
+            {
+                this.buffer = buffer;
+            }
+
+            index = 0;
+            final int limit = parentMessage.limit();
+            parentMessage.limit(limit + HEADER_SIZE);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (buffer.getShort(limit + 2, BYTE_ORDER) & 0xFFFF);
+        }
+
+        public ListStatusDecoder next()
+        {
+            if (index >= count)
+            {
+                throw new java.util.NoSuchElementException();
+            }
+
+            offset = parentMessage.limit();
+            parentMessage.limit(offset + blockLength);
+            ++index;
+
+            return this;
+        }
+
+        public static int countMinValue()
+        {
+            return 0;
+        }
+
+        public static int countMaxValue()
+        {
+            return 65534;
+        }
+
+        public static int sbeHeaderSize()
+        {
+            return HEADER_SIZE;
+        }
+
+        public static int sbeBlockLength()
+        {
+            return 10;
+        }
+
+        public int actingBlockLength()
+        {
+            return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
+        }
+
+        public int count()
+        {
+            return count;
+        }
+
+        public java.util.Iterator<ListStatusDecoder> iterator()
+        {
+            return this;
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean hasNext()
+        {
+            return index < count;
+        }
+
+        public static int orderListIdId()
+        {
+            return 1;
+        }
+
+        public static int orderListIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int orderListIdEncodingOffset()
+        {
+            return 0;
+        }
+
+        public static int orderListIdEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String orderListIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long orderListIdNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long orderListIdMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long orderListIdMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long orderListId()
+        {
+            return buffer.getLong(offset + 0, BYTE_ORDER);
+        }
+
+
+        public static int contingencyTypeId()
+        {
+            return 2;
+        }
+
+        public static int contingencyTypeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int contingencyTypeEncodingOffset()
+        {
+            return 8;
+        }
+
+        public static int contingencyTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String contingencyTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short contingencyTypeRaw()
+        {
+            return ((short)(buffer.getByte(offset + 8) & 0xFF));
+        }
+
+        public ContingencyType contingencyType()
+        {
+            return ContingencyType.get(((short)(buffer.getByte(offset + 8) & 0xFF)));
+        }
+
+
+        public static int listOrderStatusId()
+        {
+            return 3;
+        }
+
+        public static int listOrderStatusSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int listOrderStatusEncodingOffset()
+        {
+            return 9;
+        }
+
+        public static int listOrderStatusEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String listOrderStatusMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short listOrderStatusRaw()
+        {
+            return ((short)(buffer.getByte(offset + 9) & 0xFF));
+        }
+
+        public ListOrderStatus listOrderStatus()
+        {
+            return ListOrderStatus.get(((short)(buffer.getByte(offset + 9) & 0xFF)));
+        }
+
+
+        public static long ordersDecoderId()
+        {
+            return 100;
+        }
+
+        public static int ordersDecoderSinceVersion()
+        {
+            return 0;
+        }
+
+        public OrdersDecoder orders()
+        {
+            orders.wrap(buffer);
+            return orders;
+        }
+
+        public static final class OrdersDecoder
+            implements Iterable<OrdersDecoder>, java.util.Iterator<OrdersDecoder>
+        {
+            public static final int HEADER_SIZE = 4;
+            private final OrderAmendKeepPriorityResponseDecoder parentMessage;
+            private DirectBuffer buffer;
+            private int count;
+            private int index;
+            private int offset;
+            private int blockLength;
+
+            OrdersDecoder(final OrderAmendKeepPriorityResponseDecoder parentMessage)
+            {
+                this.parentMessage = parentMessage;
+            }
+
+            public void wrap(final DirectBuffer buffer)
+            {
+                if (buffer != this.buffer)
+                {
+                    this.buffer = buffer;
+                }
+
+                index = 0;
+                final int limit = parentMessage.limit();
+                parentMessage.limit(limit + HEADER_SIZE);
+                blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+                count = (buffer.getShort(limit + 2, BYTE_ORDER) & 0xFFFF);
+            }
+
+            public OrdersDecoder next()
+            {
+                if (index >= count)
+                {
+                    throw new java.util.NoSuchElementException();
+                }
+
+                offset = parentMessage.limit();
+                parentMessage.limit(offset + blockLength);
+                ++index;
+
+                return this;
+            }
+
+            public static int countMinValue()
+            {
+                return 0;
+            }
+
+            public static int countMaxValue()
+            {
+                return 65534;
+            }
+
+            public static int sbeHeaderSize()
+            {
+                return HEADER_SIZE;
+            }
+
+            public static int sbeBlockLength()
+            {
+                return 8;
+            }
+
+            public int actingBlockLength()
+            {
+                return blockLength;
+            }
+
+            public int actingVersion()
+            {
+                return parentMessage.actingVersion;
+            }
+
+            public int count()
+            {
+                return count;
+            }
+
+            public java.util.Iterator<OrdersDecoder> iterator()
+            {
+                return this;
+            }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            public boolean hasNext()
+            {
+                return index < count;
+            }
+
+            public static int orderIdId()
+            {
+                return 1;
+            }
+
+            public static int orderIdSinceVersion()
+            {
+                return 0;
+            }
+
+            public static int orderIdEncodingOffset()
+            {
+                return 0;
+            }
+
+            public static int orderIdEncodingLength()
+            {
+                return 8;
+            }
+
+            public static String orderIdMetaAttribute(final MetaAttribute metaAttribute)
+            {
+                if (MetaAttribute.PRESENCE == metaAttribute)
+                {
+                    return "required";
+                }
+
+                return "";
+            }
+
+            public static long orderIdNullValue()
+            {
+                return -9223372036854775808L;
+            }
+
+            public static long orderIdMinValue()
+            {
+                return -9223372036854775807L;
+            }
+
+            public static long orderIdMaxValue()
+            {
+                return 9223372036854775807L;
+            }
+
+            public long orderId()
+            {
+                return buffer.getLong(offset + 0, BYTE_ORDER);
+            }
+
+
+            public static int symbolId()
+            {
+                return 200;
+            }
+
+            public static int symbolSinceVersion()
+            {
+                return 0;
+            }
+
+            public static String symbolCharacterEncoding()
+            {
+                return java.nio.charset.StandardCharsets.UTF_8.name();
+            }
+
+            public static String symbolMetaAttribute(final MetaAttribute metaAttribute)
+            {
+                if (MetaAttribute.PRESENCE == metaAttribute)
+                {
+                    return "required";
+                }
+
+                return "";
+            }
+
+            public static int symbolHeaderLength()
+            {
+                return 1;
+            }
+
+            public int symbolLength()
+            {
+                final int limit = parentMessage.limit();
+                return ((short)(buffer.getByte(limit) & 0xFF));
+            }
+
+            public int skipSymbol()
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int dataOffset = limit + headerLength;
+                parentMessage.limit(dataOffset + dataLength);
+
+                return dataLength;
+            }
+
+            public int getSymbol(final MutableDirectBuffer dst, final int dstOffset, final int length)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int bytesCopied = Math.min(length, dataLength);
+                parentMessage.limit(limit + headerLength + dataLength);
+                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                return bytesCopied;
+            }
+
+            public int getSymbol(final byte[] dst, final int dstOffset, final int length)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int bytesCopied = Math.min(length, dataLength);
+                parentMessage.limit(limit + headerLength + dataLength);
+                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                return bytesCopied;
+            }
+
+            public void wrapSymbol(final DirectBuffer wrapBuffer)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                parentMessage.limit(limit + headerLength + dataLength);
+                wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+            }
+
+            public String symbol()
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                parentMessage.limit(limit + headerLength + dataLength);
+
+                if (0 == dataLength)
+                {
+                    return "";
+                }
+
+                final byte[] tmp = new byte[dataLength];
+                buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+                return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+            }
+
+            public static int clientOrderIdId()
+            {
+                return 201;
+            }
+
+            public static int clientOrderIdSinceVersion()
+            {
+                return 0;
+            }
+
+            public static String clientOrderIdCharacterEncoding()
+            {
+                return java.nio.charset.StandardCharsets.UTF_8.name();
+            }
+
+            public static String clientOrderIdMetaAttribute(final MetaAttribute metaAttribute)
+            {
+                if (MetaAttribute.PRESENCE == metaAttribute)
+                {
+                    return "required";
+                }
+
+                return "";
+            }
+
+            public static int clientOrderIdHeaderLength()
+            {
+                return 1;
+            }
+
+            public int clientOrderIdLength()
+            {
+                final int limit = parentMessage.limit();
+                return ((short)(buffer.getByte(limit) & 0xFF));
+            }
+
+            public int skipClientOrderId()
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int dataOffset = limit + headerLength;
+                parentMessage.limit(dataOffset + dataLength);
+
+                return dataLength;
+            }
+
+            public int getClientOrderId(final MutableDirectBuffer dst, final int dstOffset, final int length)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int bytesCopied = Math.min(length, dataLength);
+                parentMessage.limit(limit + headerLength + dataLength);
+                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                return bytesCopied;
+            }
+
+            public int getClientOrderId(final byte[] dst, final int dstOffset, final int length)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                final int bytesCopied = Math.min(length, dataLength);
+                parentMessage.limit(limit + headerLength + dataLength);
+                buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+                return bytesCopied;
+            }
+
+            public void wrapClientOrderId(final DirectBuffer wrapBuffer)
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                parentMessage.limit(limit + headerLength + dataLength);
+                wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+            }
+
+            public String clientOrderId()
+            {
+                final int headerLength = 1;
+                final int limit = parentMessage.limit();
+                final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+                parentMessage.limit(limit + headerLength + dataLength);
+
+                if (0 == dataLength)
+                {
+                    return "";
+                }
+
+                final byte[] tmp = new byte[dataLength];
+                buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+                return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+            }
+
+            public StringBuilder appendTo(final StringBuilder builder)
+            {
+                if (null == buffer)
+                {
+                    return builder;
+                }
+
+                builder.append('(');
+                builder.append("orderId=");
+                builder.append(this.orderId());
+                builder.append('|');
+                builder.append("symbol=");
+                builder.append('\'').append(symbol()).append('\'');
+                builder.append('|');
+                builder.append("clientOrderId=");
+                builder.append('\'').append(clientOrderId()).append('\'');
+                builder.append(')');
+
+                return builder;
+            }
+            
+            public OrdersDecoder sbeSkip()
+            {
+                skipSymbol();
+                skipClientOrderId();
+
+                return this;
+            }
+        }
+
+        public static int listClientOrderIdId()
+        {
+            return 201;
+        }
+
+        public static int listClientOrderIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static String listClientOrderIdCharacterEncoding()
+        {
+            return java.nio.charset.StandardCharsets.UTF_8.name();
+        }
+
+        public static String listClientOrderIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static int listClientOrderIdHeaderLength()
+        {
+            return 1;
+        }
+
+        public int listClientOrderIdLength()
+        {
+            final int limit = parentMessage.limit();
+            return ((short)(buffer.getByte(limit) & 0xFF));
+        }
+
+        public int skipListClientOrderId()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int dataOffset = limit + headerLength;
+            parentMessage.limit(dataOffset + dataLength);
+
+            return dataLength;
+        }
+
+        public int getListClientOrderId(final MutableDirectBuffer dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public int getListClientOrderId(final byte[] dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public void wrapListClientOrderId(final DirectBuffer wrapBuffer)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+            wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+        }
+
+        public String listClientOrderId()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+
+            if (0 == dataLength)
+            {
+                return "";
+            }
+
+            final byte[] tmp = new byte[dataLength];
+            buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+            return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        public static int symbolId()
+        {
+            return 200;
+        }
+
+        public static int symbolSinceVersion()
+        {
+            return 0;
+        }
+
+        public static String symbolCharacterEncoding()
+        {
+            return java.nio.charset.StandardCharsets.UTF_8.name();
+        }
+
+        public static String symbolMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static int symbolHeaderLength()
+        {
+            return 1;
+        }
+
+        public int symbolLength()
+        {
+            final int limit = parentMessage.limit();
+            return ((short)(buffer.getByte(limit) & 0xFF));
+        }
+
+        public int skipSymbol()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int dataOffset = limit + headerLength;
+            parentMessage.limit(dataOffset + dataLength);
+
+            return dataLength;
+        }
+
+        public int getSymbol(final MutableDirectBuffer dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public int getSymbol(final byte[] dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public void wrapSymbol(final DirectBuffer wrapBuffer)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+            wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+        }
+
+        public String symbol()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+
+            if (0 == dataLength)
+            {
+                return "";
+            }
+
+            final byte[] tmp = new byte[dataLength];
+            buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+            return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        public StringBuilder appendTo(final StringBuilder builder)
+        {
+            if (null == buffer)
+            {
+                return builder;
+            }
+
+            builder.append('(');
+            builder.append("orderListId=");
+            builder.append(this.orderListId());
+            builder.append('|');
+            builder.append("contingencyType=");
+            builder.append(this.contingencyType());
+            builder.append('|');
+            builder.append("listOrderStatus=");
+            builder.append(this.listOrderStatus());
+            builder.append('|');
+            builder.append("orders=[");
+            final int ordersOriginalOffset = orders.offset;
+            final int ordersOriginalIndex = orders.index;
+            final OrdersDecoder orders = this.orders();
+            if (orders.count() > 0)
+            {
+                while (orders.hasNext())
+                {
+                    orders.next().appendTo(builder);
+                    builder.append(',');
+                }
+                builder.setLength(builder.length() - 1);
+            }
+            orders.offset = ordersOriginalOffset;
+            orders.index = ordersOriginalIndex;
+            builder.append(']');
+            builder.append('|');
+            builder.append("listClientOrderId=");
+            builder.append('\'').append(listClientOrderId()).append('\'');
+            builder.append('|');
+            builder.append("symbol=");
+            builder.append('\'').append(symbol()).append('\'');
+            builder.append(')');
+
+            return builder;
+        }
+        
+        public ListStatusDecoder sbeSkip()
+        {
+            OrdersDecoder orders = this.orders();
+            if (orders.count() > 0)
+            {
+                while (orders.hasNext())
+                {
+                    orders.next();
+                    orders.sbeSkip();
+                }
+            }
+            skipListClientOrderId();
+            skipSymbol();
+
+            return this;
+        }
+    }
+
+    private final RelatedOrdersDecoder relatedOrders = new RelatedOrdersDecoder(this);
+
+    public static long relatedOrdersDecoderId()
+    {
+        return 102;
+    }
+
+    public static int relatedOrdersDecoderSinceVersion()
+    {
+        return 0;
+    }
+
+    public RelatedOrdersDecoder relatedOrders()
+    {
+        relatedOrders.wrap(buffer);
+        return relatedOrders;
+    }
+
+    public static final class RelatedOrdersDecoder
+        implements Iterable<RelatedOrdersDecoder>, java.util.Iterator<RelatedOrdersDecoder>
+    {
+        public static final int HEADER_SIZE = 4;
+        private final OrderAmendKeepPriorityResponseDecoder parentMessage;
+        private DirectBuffer buffer;
+        private int count;
+        private int index;
+        private int offset;
+        private int blockLength;
+
+        RelatedOrdersDecoder(final OrderAmendKeepPriorityResponseDecoder parentMessage)
+        {
+            this.parentMessage = parentMessage;
+        }
+
+        public void wrap(final DirectBuffer buffer)
+        {
+            if (buffer != this.buffer)
+            {
+                this.buffer = buffer;
+            }
+
+            index = 0;
+            final int limit = parentMessage.limit();
+            parentMessage.limit(limit + HEADER_SIZE);
+            blockLength = (buffer.getShort(limit + 0, BYTE_ORDER) & 0xFFFF);
+            count = (buffer.getShort(limit + 2, BYTE_ORDER) & 0xFFFF);
+        }
+
+        public RelatedOrdersDecoder next()
+        {
+            if (index >= count)
+            {
+                throw new java.util.NoSuchElementException();
+            }
+
+            offset = parentMessage.limit();
+            parentMessage.limit(offset + blockLength);
+            ++index;
+
+            return this;
+        }
+
+        public static int countMinValue()
+        {
+            return 0;
+        }
+
+        public static int countMaxValue()
+        {
+            return 65534;
+        }
+
+        public static int sbeHeaderSize()
+        {
+            return HEADER_SIZE;
+        }
+
+        public static int sbeBlockLength()
+        {
+            return 127;
+        }
+
+        public int actingBlockLength()
+        {
+            return blockLength;
+        }
+
+        public int actingVersion()
+        {
+            return parentMessage.actingVersion;
+        }
+
+        public int count()
+        {
+            return count;
+        }
+
+        public java.util.Iterator<RelatedOrdersDecoder> iterator()
+        {
+            return this;
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean hasNext()
+        {
+            return index < count;
+        }
+
+        public static int orderIdId()
+        {
+            return 1;
+        }
+
+        public static int orderIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int orderIdEncodingOffset()
+        {
+            return 0;
+        }
+
+        public static int orderIdEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String orderIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long orderIdNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long orderIdMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long orderIdMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long orderId()
+        {
+            return buffer.getLong(offset + 0, BYTE_ORDER);
+        }
+
+
+        public static int orderListIdId()
+        {
+            return 2;
+        }
+
+        public static int orderListIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int orderListIdEncodingOffset()
+        {
+            return 8;
+        }
+
+        public static int orderListIdEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String orderListIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long orderListIdNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long orderListIdMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long orderListIdMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long orderListId()
+        {
+            return buffer.getLong(offset + 8, BYTE_ORDER);
+        }
+
+
+        public static int priceId()
+        {
+            return 3;
+        }
+
+        public static int priceSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int priceEncodingOffset()
+        {
+            return 16;
+        }
+
+        public static int priceEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String priceMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long priceNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long priceMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long priceMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long price()
+        {
+            return buffer.getLong(offset + 16, BYTE_ORDER);
+        }
+
+
+        public static int qtyId()
+        {
+            return 4;
+        }
+
+        public static int qtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int qtyEncodingOffset()
+        {
+            return 24;
+        }
+
+        public static int qtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String qtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long qtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long qtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long qtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long qty()
+        {
+            return buffer.getLong(offset + 24, BYTE_ORDER);
+        }
+
+
+        public static int executedQtyId()
+        {
+            return 5;
+        }
+
+        public static int executedQtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int executedQtyEncodingOffset()
+        {
+            return 32;
+        }
+
+        public static int executedQtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String executedQtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long executedQtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long executedQtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long executedQtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long executedQty()
+        {
+            return buffer.getLong(offset + 32, BYTE_ORDER);
+        }
+
+
+        public static int preventedQtyId()
+        {
+            return 6;
+        }
+
+        public static int preventedQtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int preventedQtyEncodingOffset()
+        {
+            return 40;
+        }
+
+        public static int preventedQtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String preventedQtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long preventedQtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long preventedQtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long preventedQtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long preventedQty()
+        {
+            return buffer.getLong(offset + 40, BYTE_ORDER);
+        }
+
+
+        public static int cumulativeQuoteQtyId()
+        {
+            return 7;
+        }
+
+        public static int cumulativeQuoteQtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int cumulativeQuoteQtyEncodingOffset()
+        {
+            return 48;
+        }
+
+        public static int cumulativeQuoteQtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String cumulativeQuoteQtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static long cumulativeQuoteQtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long cumulativeQuoteQtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long cumulativeQuoteQtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long cumulativeQuoteQty()
+        {
+            return buffer.getLong(offset + 48, BYTE_ORDER);
+        }
+
+
+        public static int statusId()
+        {
+            return 8;
+        }
+
+        public static int statusSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int statusEncodingOffset()
+        {
+            return 56;
+        }
+
+        public static int statusEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String statusMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short statusRaw()
+        {
+            return ((short)(buffer.getByte(offset + 56) & 0xFF));
+        }
+
+        public OrderStatus status()
+        {
+            return OrderStatus.get(((short)(buffer.getByte(offset + 56) & 0xFF)));
+        }
+
+
+        public static int timeInForceId()
+        {
+            return 9;
+        }
+
+        public static int timeInForceSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int timeInForceEncodingOffset()
+        {
+            return 57;
+        }
+
+        public static int timeInForceEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String timeInForceMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short timeInForceRaw()
+        {
+            return ((short)(buffer.getByte(offset + 57) & 0xFF));
+        }
+
+        public TimeInForce timeInForce()
+        {
+            return TimeInForce.get(((short)(buffer.getByte(offset + 57) & 0xFF)));
+        }
+
+
+        public static int orderTypeId()
+        {
+            return 10;
+        }
+
+        public static int orderTypeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int orderTypeEncodingOffset()
+        {
+            return 58;
+        }
+
+        public static int orderTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String orderTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short orderTypeRaw()
+        {
+            return ((short)(buffer.getByte(offset + 58) & 0xFF));
+        }
+
+        public OrderType orderType()
+        {
+            return OrderType.get(((short)(buffer.getByte(offset + 58) & 0xFF)));
+        }
+
+
+        public static int sideId()
+        {
+            return 11;
+        }
+
+        public static int sideSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int sideEncodingOffset()
+        {
+            return 59;
+        }
+
+        public static int sideEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String sideMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short sideRaw()
+        {
+            return ((short)(buffer.getByte(offset + 59) & 0xFF));
+        }
+
+        public OrderSide side()
+        {
+            return OrderSide.get(((short)(buffer.getByte(offset + 59) & 0xFF)));
+        }
+
+
+        public static int stopPriceId()
+        {
+            return 12;
+        }
+
+        public static int stopPriceSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int stopPriceEncodingOffset()
+        {
+            return 60;
+        }
+
+        public static int stopPriceEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String stopPriceMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long stopPriceNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long stopPriceMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long stopPriceMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long stopPrice()
+        {
+            return buffer.getLong(offset + 60, BYTE_ORDER);
+        }
+
+
+        public static int trailingDeltaId()
+        {
+            return 13;
+        }
+
+        public static int trailingDeltaSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int trailingDeltaEncodingOffset()
+        {
+            return 68;
+        }
+
+        public static int trailingDeltaEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String trailingDeltaMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long trailingDeltaNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long trailingDeltaMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long trailingDeltaMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long trailingDelta()
+        {
+            return buffer.getLong(offset + 68, BYTE_ORDER);
+        }
+
+
+        public static int trailingTimeId()
+        {
+            return 14;
+        }
+
+        public static int trailingTimeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int trailingTimeEncodingOffset()
+        {
+            return 76;
+        }
+
+        public static int trailingTimeEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String trailingTimeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long trailingTimeNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long trailingTimeMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long trailingTimeMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long trailingTime()
+        {
+            return buffer.getLong(offset + 76, BYTE_ORDER);
+        }
+
+
+        public static int icebergQtyId()
+        {
+            return 15;
+        }
+
+        public static int icebergQtySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int icebergQtyEncodingOffset()
+        {
+            return 84;
+        }
+
+        public static int icebergQtyEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String icebergQtyMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long icebergQtyNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long icebergQtyMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long icebergQtyMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long icebergQty()
+        {
+            return buffer.getLong(offset + 84, BYTE_ORDER);
+        }
+
+
+        public static int workingTimeId()
+        {
+            return 16;
+        }
+
+        public static int workingTimeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int workingTimeEncodingOffset()
+        {
+            return 92;
+        }
+
+        public static int workingTimeEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String workingTimeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long workingTimeNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long workingTimeMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long workingTimeMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long workingTime()
+        {
+            return buffer.getLong(offset + 92, BYTE_ORDER);
+        }
+
+
+        public static int strategyIdId()
+        {
+            return 17;
+        }
+
+        public static int strategyIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int strategyIdEncodingOffset()
+        {
+            return 100;
+        }
+
+        public static int strategyIdEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String strategyIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long strategyIdNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long strategyIdMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long strategyIdMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long strategyId()
+        {
+            return buffer.getLong(offset + 100, BYTE_ORDER);
+        }
+
+
+        public static int strategyTypeId()
+        {
+            return 18;
+        }
+
+        public static int strategyTypeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int strategyTypeEncodingOffset()
+        {
+            return 108;
+        }
+
+        public static int strategyTypeEncodingLength()
+        {
+            return 4;
+        }
+
+        public static String strategyTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static int strategyTypeNullValue()
+        {
+            return -2147483648;
+        }
+
+        public static int strategyTypeMinValue()
+        {
+            return -2147483647;
+        }
+
+        public static int strategyTypeMaxValue()
+        {
+            return 2147483647;
+        }
+
+        public int strategyType()
+        {
+            return buffer.getInt(offset + 108, BYTE_ORDER);
+        }
+
+
+        public static int orderCapacityId()
+        {
+            return 19;
+        }
+
+        public static int orderCapacitySinceVersion()
+        {
+            return 0;
+        }
+
+        public static int orderCapacityEncodingOffset()
+        {
+            return 112;
+        }
+
+        public static int orderCapacityEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String orderCapacityMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short orderCapacityRaw()
+        {
+            return ((short)(buffer.getByte(offset + 112) & 0xFF));
+        }
+
+        public OrderCapacity orderCapacity()
+        {
+            return OrderCapacity.get(((short)(buffer.getByte(offset + 112) & 0xFF)));
+        }
+
+
+        public static int workingFloorId()
+        {
+            return 20;
+        }
+
+        public static int workingFloorSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int workingFloorEncodingOffset()
+        {
+            return 113;
+        }
+
+        public static int workingFloorEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String workingFloorMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short workingFloorRaw()
+        {
+            return ((short)(buffer.getByte(offset + 113) & 0xFF));
+        }
+
+        public Floor workingFloor()
+        {
+            return Floor.get(((short)(buffer.getByte(offset + 113) & 0xFF)));
+        }
+
+
+        public static int selfTradePreventionModeId()
+        {
+            return 21;
+        }
+
+        public static int selfTradePreventionModeSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int selfTradePreventionModeEncodingOffset()
+        {
+            return 114;
+        }
+
+        public static int selfTradePreventionModeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String selfTradePreventionModeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short selfTradePreventionModeRaw()
+        {
+            return ((short)(buffer.getByte(offset + 114) & 0xFF));
+        }
+
+        public SelfTradePreventionMode selfTradePreventionMode()
+        {
+            return SelfTradePreventionMode.get(((short)(buffer.getByte(offset + 114) & 0xFF)));
+        }
+
+
+        public static int usedSorId()
+        {
+            return 22;
+        }
+
+        public static int usedSorSinceVersion()
+        {
+            return 0;
+        }
+
+        public static int usedSorEncodingOffset()
+        {
+            return 115;
+        }
+
+        public static int usedSorEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String usedSorMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public short usedSorRaw()
+        {
+            return ((short)(buffer.getByte(offset + 115) & 0xFF));
+        }
+
+        public BoolEnum usedSor()
+        {
+            return BoolEnum.get(((short)(buffer.getByte(offset + 115) & 0xFF)));
+        }
+
+
+        public static int pegPriceTypeId()
+        {
+            return 23;
+        }
+
+        public static int pegPriceTypeSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegPriceTypeEncodingOffset()
+        {
+            return 116;
+        }
+
+        public static int pegPriceTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegPriceTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public short pegPriceTypeRaw()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 116) & 0xFF));
+        }
+
+        public PegPriceType pegPriceType()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return PegPriceType.NULL_VAL;
+            }
+
+            return PegPriceType.get(((short)(buffer.getByte(offset + 116) & 0xFF)));
+        }
+
+
+        public static int pegOffsetTypeId()
+        {
+            return 24;
+        }
+
+        public static int pegOffsetTypeSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegOffsetTypeEncodingOffset()
+        {
+            return 117;
+        }
+
+        public static int pegOffsetTypeEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegOffsetTypeMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public short pegOffsetTypeRaw()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 117) & 0xFF));
+        }
+
+        public PegOffsetType pegOffsetType()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return PegOffsetType.NULL_VAL;
+            }
+
+            return PegOffsetType.get(((short)(buffer.getByte(offset + 117) & 0xFF)));
+        }
+
+
+        public static int pegOffsetValueId()
+        {
+            return 25;
+        }
+
+        public static int pegOffsetValueSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int pegOffsetValueEncodingOffset()
+        {
+            return 118;
+        }
+
+        public static int pegOffsetValueEncodingLength()
+        {
+            return 1;
+        }
+
+        public static String pegOffsetValueMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static short pegOffsetValueNullValue()
+        {
+            return (short)255;
+        }
+
+        public static short pegOffsetValueMinValue()
+        {
+            return (short)0;
+        }
+
+        public static short pegOffsetValueMaxValue()
+        {
+            return (short)254;
+        }
+
+        public short pegOffsetValue()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return (short)255;
+            }
+
+            return ((short)(buffer.getByte(offset + 118) & 0xFF));
+        }
+
+
+        public static int peggedPriceId()
+        {
+            return 26;
+        }
+
+        public static int peggedPriceSinceVersion()
+        {
+            return 1;
+        }
+
+        public static int peggedPriceEncodingOffset()
+        {
+            return 119;
+        }
+
+        public static int peggedPriceEncodingLength()
+        {
+            return 8;
+        }
+
+        public static String peggedPriceMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "optional";
+            }
+
+            return "";
+        }
+
+        public static long peggedPriceNullValue()
+        {
+            return -9223372036854775808L;
+        }
+
+        public static long peggedPriceMinValue()
+        {
+            return -9223372036854775807L;
+        }
+
+        public static long peggedPriceMaxValue()
+        {
+            return 9223372036854775807L;
+        }
+
+        public long peggedPrice()
+        {
+            if (parentMessage.actingVersion < 1)
+            {
+                return -9223372036854775808L;
+            }
+
+            return buffer.getLong(offset + 119, BYTE_ORDER);
+        }
+
+
+        public static int symbolId()
+        {
+            return 200;
+        }
+
+        public static int symbolSinceVersion()
+        {
+            return 0;
+        }
+
+        public static String symbolCharacterEncoding()
+        {
+            return java.nio.charset.StandardCharsets.UTF_8.name();
+        }
+
+        public static String symbolMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static int symbolHeaderLength()
+        {
+            return 1;
+        }
+
+        public int symbolLength()
+        {
+            final int limit = parentMessage.limit();
+            return ((short)(buffer.getByte(limit) & 0xFF));
+        }
+
+        public int skipSymbol()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int dataOffset = limit + headerLength;
+            parentMessage.limit(dataOffset + dataLength);
+
+            return dataLength;
+        }
+
+        public int getSymbol(final MutableDirectBuffer dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public int getSymbol(final byte[] dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public void wrapSymbol(final DirectBuffer wrapBuffer)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+            wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+        }
+
+        public String symbol()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+
+            if (0 == dataLength)
+            {
+                return "";
+            }
+
+            final byte[] tmp = new byte[dataLength];
+            buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+            return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        public static int clientOrderIdId()
+        {
+            return 201;
+        }
+
+        public static int clientOrderIdSinceVersion()
+        {
+            return 0;
+        }
+
+        public static String clientOrderIdCharacterEncoding()
+        {
+            return java.nio.charset.StandardCharsets.UTF_8.name();
+        }
+
+        public static String clientOrderIdMetaAttribute(final MetaAttribute metaAttribute)
+        {
+            if (MetaAttribute.PRESENCE == metaAttribute)
+            {
+                return "required";
+            }
+
+            return "";
+        }
+
+        public static int clientOrderIdHeaderLength()
+        {
+            return 1;
+        }
+
+        public int clientOrderIdLength()
+        {
+            final int limit = parentMessage.limit();
+            return ((short)(buffer.getByte(limit) & 0xFF));
+        }
+
+        public int skipClientOrderId()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int dataOffset = limit + headerLength;
+            parentMessage.limit(dataOffset + dataLength);
+
+            return dataLength;
+        }
+
+        public int getClientOrderId(final MutableDirectBuffer dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public int getClientOrderId(final byte[] dst, final int dstOffset, final int length)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            final int bytesCopied = Math.min(length, dataLength);
+            parentMessage.limit(limit + headerLength + dataLength);
+            buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+            return bytesCopied;
+        }
+
+        public void wrapClientOrderId(final DirectBuffer wrapBuffer)
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+            wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+        }
+
+        public String clientOrderId()
+        {
+            final int headerLength = 1;
+            final int limit = parentMessage.limit();
+            final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+            parentMessage.limit(limit + headerLength + dataLength);
+
+            if (0 == dataLength)
+            {
+                return "";
+            }
+
+            final byte[] tmp = new byte[dataLength];
+            buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+            return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        public StringBuilder appendTo(final StringBuilder builder)
+        {
+            if (null == buffer)
+            {
+                return builder;
+            }
+
+            builder.append('(');
+            builder.append("orderId=");
+            builder.append(this.orderId());
+            builder.append('|');
+            builder.append("orderListId=");
+            builder.append(this.orderListId());
+            builder.append('|');
+            builder.append("price=");
+            builder.append(this.price());
+            builder.append('|');
+            builder.append("qty=");
+            builder.append(this.qty());
+            builder.append('|');
+            builder.append("executedQty=");
+            builder.append(this.executedQty());
+            builder.append('|');
+            builder.append("preventedQty=");
+            builder.append(this.preventedQty());
+            builder.append('|');
+            builder.append("cumulativeQuoteQty=");
+            builder.append(this.cumulativeQuoteQty());
+            builder.append('|');
+            builder.append("status=");
+            builder.append(this.status());
+            builder.append('|');
+            builder.append("timeInForce=");
+            builder.append(this.timeInForce());
+            builder.append('|');
+            builder.append("orderType=");
+            builder.append(this.orderType());
+            builder.append('|');
+            builder.append("side=");
+            builder.append(this.side());
+            builder.append('|');
+            builder.append("stopPrice=");
+            builder.append(this.stopPrice());
+            builder.append('|');
+            builder.append("trailingDelta=");
+            builder.append(this.trailingDelta());
+            builder.append('|');
+            builder.append("trailingTime=");
+            builder.append(this.trailingTime());
+            builder.append('|');
+            builder.append("icebergQty=");
+            builder.append(this.icebergQty());
+            builder.append('|');
+            builder.append("workingTime=");
+            builder.append(this.workingTime());
+            builder.append('|');
+            builder.append("strategyId=");
+            builder.append(this.strategyId());
+            builder.append('|');
+            builder.append("strategyType=");
+            builder.append(this.strategyType());
+            builder.append('|');
+            builder.append("orderCapacity=");
+            builder.append(this.orderCapacity());
+            builder.append('|');
+            builder.append("workingFloor=");
+            builder.append(this.workingFloor());
+            builder.append('|');
+            builder.append("selfTradePreventionMode=");
+            builder.append(this.selfTradePreventionMode());
+            builder.append('|');
+            builder.append("usedSor=");
+            builder.append(this.usedSor());
+            builder.append('|');
+            builder.append("pegPriceType=");
+            builder.append(this.pegPriceType());
+            builder.append('|');
+            builder.append("pegOffsetType=");
+            builder.append(this.pegOffsetType());
+            builder.append('|');
+            builder.append("pegOffsetValue=");
+            builder.append(this.pegOffsetValue());
+            builder.append('|');
+            builder.append("peggedPrice=");
+            builder.append(this.peggedPrice());
+            builder.append('|');
+            builder.append("symbol=");
+            builder.append('\'').append(symbol()).append('\'');
+            builder.append('|');
+            builder.append("clientOrderId=");
+            builder.append('\'').append(clientOrderId()).append('\'');
+            builder.append(')');
+
+            return builder;
+        }
+        
+        public RelatedOrdersDecoder sbeSkip()
+        {
+            skipSymbol();
+            skipClientOrderId();
+
+            return this;
+        }
+    }
+
+    public static int symbolId()
+    {
+        return 200;
+    }
+
+    public static int symbolSinceVersion()
+    {
+        return 0;
+    }
+
+    public static String symbolCharacterEncoding()
+    {
+        return java.nio.charset.StandardCharsets.UTF_8.name();
+    }
+
+    public static String symbolMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static int symbolHeaderLength()
+    {
+        return 1;
+    }
+
+    public int symbolLength()
+    {
+        final int limit = parentMessage.limit();
+        return ((short)(buffer.getByte(limit) & 0xFF));
+    }
+
+    public int skipSymbol()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int dataOffset = limit + headerLength;
+        parentMessage.limit(dataOffset + dataLength);
+
+        return dataLength;
+    }
+
+    public int getSymbol(final MutableDirectBuffer dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public int getSymbol(final byte[] dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public void wrapSymbol(final DirectBuffer wrapBuffer)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+        wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+    }
+
+    public String symbol()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+
+        if (0 == dataLength)
+        {
+            return "";
+        }
+
+        final byte[] tmp = new byte[dataLength];
+        buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+        return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    public static int origClientOrderIdId()
+    {
+        return 201;
+    }
+
+    public static int origClientOrderIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static String origClientOrderIdCharacterEncoding()
+    {
+        return java.nio.charset.StandardCharsets.UTF_8.name();
+    }
+
+    public static String origClientOrderIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static int origClientOrderIdHeaderLength()
+    {
+        return 1;
+    }
+
+    public int origClientOrderIdLength()
+    {
+        final int limit = parentMessage.limit();
+        return ((short)(buffer.getByte(limit) & 0xFF));
+    }
+
+    public int skipOrigClientOrderId()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int dataOffset = limit + headerLength;
+        parentMessage.limit(dataOffset + dataLength);
+
+        return dataLength;
+    }
+
+    public int getOrigClientOrderId(final MutableDirectBuffer dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public int getOrigClientOrderId(final byte[] dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public void wrapOrigClientOrderId(final DirectBuffer wrapBuffer)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+        wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+    }
+
+    public String origClientOrderId()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+
+        if (0 == dataLength)
+        {
+            return "";
+        }
+
+        final byte[] tmp = new byte[dataLength];
+        buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+        return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    public static int clientOrderIdId()
+    {
+        return 202;
+    }
+
+    public static int clientOrderIdSinceVersion()
+    {
+        return 0;
+    }
+
+    public static String clientOrderIdCharacterEncoding()
+    {
+        return java.nio.charset.StandardCharsets.UTF_8.name();
+    }
+
+    public static String clientOrderIdMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static int clientOrderIdHeaderLength()
+    {
+        return 1;
+    }
+
+    public int clientOrderIdLength()
+    {
+        final int limit = parentMessage.limit();
+        return ((short)(buffer.getByte(limit) & 0xFF));
+    }
+
+    public int skipClientOrderId()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int dataOffset = limit + headerLength;
+        parentMessage.limit(dataOffset + dataLength);
+
+        return dataLength;
+    }
+
+    public int getClientOrderId(final MutableDirectBuffer dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public int getClientOrderId(final byte[] dst, final int dstOffset, final int length)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        final int bytesCopied = Math.min(length, dataLength);
+        parentMessage.limit(limit + headerLength + dataLength);
+        buffer.getBytes(limit + headerLength, dst, dstOffset, bytesCopied);
+
+        return bytesCopied;
+    }
+
+    public void wrapClientOrderId(final DirectBuffer wrapBuffer)
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+        wrapBuffer.wrap(buffer, limit + headerLength, dataLength);
+    }
+
+    public String clientOrderId()
+    {
+        final int headerLength = 1;
+        final int limit = parentMessage.limit();
+        final int dataLength = ((short)(buffer.getByte(limit) & 0xFF));
+        parentMessage.limit(limit + headerLength + dataLength);
+
+        if (0 == dataLength)
+        {
+            return "";
+        }
+
+        final byte[] tmp = new byte[dataLength];
+        buffer.getBytes(limit + headerLength, tmp, 0, dataLength);
+
+        return new String(tmp, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    public String toString()
+    {
+        if (null == buffer)
+        {
+            return "";
+        }
+
+        final OrderAmendKeepPriorityResponseDecoder decoder = new OrderAmendKeepPriorityResponseDecoder();
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
+
+        return decoder.appendTo(new StringBuilder()).toString();
+    }
+
+    public StringBuilder appendTo(final StringBuilder builder)
+    {
+        if (null == buffer)
+        {
+            return builder;
+        }
+
+        final int originalLimit = limit();
+        limit(offset + actingBlockLength);
+        builder.append("[OrderAmendKeepPriorityResponse](sbeTemplateId=");
+        builder.append(TEMPLATE_ID);
+        builder.append("|sbeSchemaId=");
+        builder.append(SCHEMA_ID);
+        builder.append("|sbeSchemaVersion=");
+        if (parentMessage.actingVersion != SCHEMA_VERSION)
+        {
+            builder.append(parentMessage.actingVersion);
+            builder.append('/');
+        }
+        builder.append(SCHEMA_VERSION);
+        builder.append("|sbeBlockLength=");
+        if (actingBlockLength != BLOCK_LENGTH)
+        {
+            builder.append(actingBlockLength);
+            builder.append('/');
+        }
+        builder.append(BLOCK_LENGTH);
+        builder.append("):");
+        builder.append("transactTime=");
+        builder.append(this.transactTime());
+        builder.append('|');
+        builder.append("executionId=");
+        builder.append(this.executionId());
+        builder.append('|');
+        builder.append("priceExponent=");
+        builder.append(this.priceExponent());
+        builder.append('|');
+        builder.append("qtyExponent=");
+        builder.append(this.qtyExponent());
+        builder.append('|');
+        builder.append("orderId=");
+        builder.append(this.orderId());
+        builder.append('|');
+        builder.append("orderListId=");
+        builder.append(this.orderListId());
+        builder.append('|');
+        builder.append("price=");
+        builder.append(this.price());
+        builder.append('|');
+        builder.append("qty=");
+        builder.append(this.qty());
+        builder.append('|');
+        builder.append("executedQty=");
+        builder.append(this.executedQty());
+        builder.append('|');
+        builder.append("preventedQty=");
+        builder.append(this.preventedQty());
+        builder.append('|');
+        builder.append("cumulativeQuoteQty=");
+        builder.append(this.cumulativeQuoteQty());
+        builder.append('|');
+        builder.append("status=");
+        builder.append(this.status());
+        builder.append('|');
+        builder.append("timeInForce=");
+        builder.append(this.timeInForce());
+        builder.append('|');
+        builder.append("orderType=");
+        builder.append(this.orderType());
+        builder.append('|');
+        builder.append("side=");
+        builder.append(this.side());
+        builder.append('|');
+        builder.append("stopPrice=");
+        builder.append(this.stopPrice());
+        builder.append('|');
+        builder.append("trailingDelta=");
+        builder.append(this.trailingDelta());
+        builder.append('|');
+        builder.append("trailingTime=");
+        builder.append(this.trailingTime());
+        builder.append('|');
+        builder.append("icebergQty=");
+        builder.append(this.icebergQty());
+        builder.append('|');
+        builder.append("workingTime=");
+        builder.append(this.workingTime());
+        builder.append('|');
+        builder.append("strategyId=");
+        builder.append(this.strategyId());
+        builder.append('|');
+        builder.append("strategyType=");
+        builder.append(this.strategyType());
+        builder.append('|');
+        builder.append("orderCapacity=");
+        builder.append(this.orderCapacity());
+        builder.append('|');
+        builder.append("workingFloor=");
+        builder.append(this.workingFloor());
+        builder.append('|');
+        builder.append("selfTradePreventionMode=");
+        builder.append(this.selfTradePreventionMode());
+        builder.append('|');
+        builder.append("usedSor=");
+        builder.append(this.usedSor());
+        builder.append('|');
+        builder.append("pegPriceType=");
+        builder.append(this.pegPriceType());
+        builder.append('|');
+        builder.append("pegOffsetType=");
+        builder.append(this.pegOffsetType());
+        builder.append('|');
+        builder.append("pegOffsetValue=");
+        builder.append(this.pegOffsetValue());
+        builder.append('|');
+        builder.append("peggedPrice=");
+        builder.append(this.peggedPrice());
+        builder.append('|');
+        builder.append("listStatus=[");
+        final int listStatusOriginalOffset = listStatus.offset;
+        final int listStatusOriginalIndex = listStatus.index;
+        final ListStatusDecoder listStatus = this.listStatus();
+        if (listStatus.count() > 0)
+        {
+            while (listStatus.hasNext())
+            {
+                listStatus.next().appendTo(builder);
+                builder.append(',');
+            }
+            builder.setLength(builder.length() - 1);
+        }
+        listStatus.offset = listStatusOriginalOffset;
+        listStatus.index = listStatusOriginalIndex;
+        builder.append(']');
+        builder.append('|');
+        builder.append("relatedOrders=[");
+        final int relatedOrdersOriginalOffset = relatedOrders.offset;
+        final int relatedOrdersOriginalIndex = relatedOrders.index;
+        final RelatedOrdersDecoder relatedOrders = this.relatedOrders();
+        if (relatedOrders.count() > 0)
+        {
+            while (relatedOrders.hasNext())
+            {
+                relatedOrders.next().appendTo(builder);
+                builder.append(',');
+            }
+            builder.setLength(builder.length() - 1);
+        }
+        relatedOrders.offset = relatedOrdersOriginalOffset;
+        relatedOrders.index = relatedOrdersOriginalIndex;
+        builder.append(']');
+        builder.append('|');
+        builder.append("symbol=");
+        builder.append('\'').append(symbol()).append('\'');
+        builder.append('|');
+        builder.append("origClientOrderId=");
+        builder.append('\'').append(origClientOrderId()).append('\'');
+        builder.append('|');
+        builder.append("clientOrderId=");
+        builder.append('\'').append(clientOrderId()).append('\'');
+
+        limit(originalLimit);
+
+        return builder;
+    }
+    
+    public OrderAmendKeepPriorityResponseDecoder sbeSkip()
+    {
+        sbeRewind();
+        ListStatusDecoder listStatus = this.listStatus();
+        if (listStatus.count() > 0)
+        {
+            while (listStatus.hasNext())
+            {
+                listStatus.next();
+                listStatus.sbeSkip();
+            }
+        }
+        RelatedOrdersDecoder relatedOrders = this.relatedOrders();
+        if (relatedOrders.count() > 0)
+        {
+            while (relatedOrders.hasNext())
+            {
+                relatedOrders.next();
+                relatedOrders.sbeSkip();
+            }
+        }
+        skipSymbol();
+        skipOrigClientOrderId();
+        skipClientOrderId();
+
+        return this;
+    }
+}

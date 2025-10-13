@@ -151,6 +151,16 @@ public class SymbolFilters {
         }
     }
 
+    public static class MaxNumOrderAmendsFilter {
+        public final FilterType filterType;
+        public final long maxNumOrderAmends;
+
+        MaxNumOrderAmendsFilter(FilterType filterType, long maxNumOrderAmends) {
+            this.filterType = filterType;
+            this.maxNumOrderAmends = maxNumOrderAmends;
+        }
+    }
+
     public static class MaxNumOrdersFilter {
         public final FilterType filterType;
         public final long maxNumOrders;
@@ -158,6 +168,16 @@ public class SymbolFilters {
         MaxNumOrdersFilter(FilterType filterType, long maxNumOrders) {
             this.filterType = filterType;
             this.maxNumOrders = maxNumOrders;
+        }
+    }
+
+    public static class MaxNumOrderListsFilter {
+        public final FilterType filterType;
+        public final long maxNumOrderLists;
+
+        MaxNumOrderListsFilter(FilterType filterType, long maxNumOrderLists) {
+            this.filterType = filterType;
+            this.maxNumOrderLists = maxNumOrderLists;
         }
     }
 

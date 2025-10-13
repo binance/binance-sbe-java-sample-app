@@ -38,6 +38,16 @@ public enum FilterType
 
     Notional((short)16),
 
+    MaxNumOrderLists((short)17),
+
+    ExchangeMaxNumOrderLists((short)18),
+
+    MaxNumOrderAmends((short)19),
+
+    MaxAsset((short)20),
+
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -87,6 +97,11 @@ public enum FilterType
             case 14: return TrailingDelta;
             case 15: return PercentPriceBySide;
             case 16: return Notional;
+            case 17: return MaxNumOrderLists;
+            case 18: return ExchangeMaxNumOrderLists;
+            case 19: return MaxNumOrderAmends;
+            case 20: return MaxAsset;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

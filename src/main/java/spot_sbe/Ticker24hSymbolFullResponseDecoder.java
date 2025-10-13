@@ -9,14 +9,13 @@ public final class Ticker24hSymbolFullResponseDecoder
 {
     public static final int BLOCK_LENGTH = 182;
     public static final int TEMPLATE_ID = 205;
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private final Ticker24hSymbolFullResponseDecoder parentMessage = this;
     private DirectBuffer buffer;
-    private int initialOffset;
     private int offset;
     private int limit;
     int actingBlockLength;
@@ -52,11 +51,6 @@ public final class Ticker24hSymbolFullResponseDecoder
         return buffer;
     }
 
-    public int initialOffset()
-    {
-        return initialOffset;
-    }
-
     public int offset()
     {
         return offset;
@@ -72,7 +66,6 @@ public final class Ticker24hSymbolFullResponseDecoder
         {
             this.buffer = buffer;
         }
-        this.initialOffset = offset;
         this.offset = offset;
         this.actingBlockLength = actingBlockLength;
         this.actingVersion = actingVersion;
@@ -103,7 +96,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public Ticker24hSymbolFullResponseDecoder sbeRewind()
     {
-        return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        return wrap(buffer, offset, actingBlockLength, actingVersion);
     }
 
     public int sbeDecodedLength()
@@ -285,7 +278,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long priceChange()
     {
-        return buffer.getLong(offset + 2, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 2, BYTE_ORDER);
     }
 
 
@@ -326,7 +319,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public static float priceChangePercentMinValue()
     {
-        return 1.401298464324817E-45f;
+        return -3.4028234663852886E38f;
     }
 
     public static float priceChangePercentMaxValue()
@@ -336,7 +329,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public float priceChangePercent()
     {
-        return buffer.getFloat(offset + 10, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getFloat(offset + 10, BYTE_ORDER);
     }
 
 
@@ -387,7 +380,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long weightedAvgPrice()
     {
-        return buffer.getLong(offset + 14, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 14, BYTE_ORDER);
     }
 
 
@@ -438,7 +431,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long prevClosePrice()
     {
-        return buffer.getLong(offset + 22, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 22, BYTE_ORDER);
     }
 
 
@@ -489,7 +482,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long lastPrice()
     {
-        return buffer.getLong(offset + 30, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 30, BYTE_ORDER);
     }
 
 
@@ -625,7 +618,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long bidPrice()
     {
-        return buffer.getLong(offset + 54, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 54, BYTE_ORDER);
     }
 
 
@@ -676,7 +669,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long bidQty()
     {
-        return buffer.getLong(offset + 62, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 62, BYTE_ORDER);
     }
 
 
@@ -727,7 +720,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long askPrice()
     {
-        return buffer.getLong(offset + 70, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 70, BYTE_ORDER);
     }
 
 
@@ -778,7 +771,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long askQty()
     {
-        return buffer.getLong(offset + 78, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 78, BYTE_ORDER);
     }
 
 
@@ -829,7 +822,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long openPrice()
     {
-        return buffer.getLong(offset + 86, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 86, BYTE_ORDER);
     }
 
 
@@ -880,7 +873,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long highPrice()
     {
-        return buffer.getLong(offset + 94, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 94, BYTE_ORDER);
     }
 
 
@@ -931,7 +924,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long lowPrice()
     {
-        return buffer.getLong(offset + 102, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 102, BYTE_ORDER);
     }
 
 
@@ -1152,7 +1145,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long openTime()
     {
-        return buffer.getLong(offset + 142, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 142, BYTE_ORDER);
     }
 
 
@@ -1203,7 +1196,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long closeTime()
     {
-        return buffer.getLong(offset + 150, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 150, BYTE_ORDER);
     }
 
 
@@ -1254,7 +1247,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long firstId()
     {
-        return buffer.getLong(offset + 158, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 158, BYTE_ORDER);
     }
 
 
@@ -1305,7 +1298,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long lastId()
     {
-        return buffer.getLong(offset + 166, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 166, BYTE_ORDER);
     }
 
 
@@ -1356,7 +1349,7 @@ public final class Ticker24hSymbolFullResponseDecoder
 
     public long numTrades()
     {
-        return buffer.getLong(offset + 174, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return buffer.getLong(offset + 174, BYTE_ORDER);
     }
 
 
@@ -1466,7 +1459,7 @@ public final class Ticker24hSymbolFullResponseDecoder
         }
 
         final Ticker24hSymbolFullResponseDecoder decoder = new Ticker24hSymbolFullResponseDecoder();
-        decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
+        decoder.wrap(buffer, offset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
     }
@@ -1479,7 +1472,7 @@ public final class Ticker24hSymbolFullResponseDecoder
         }
 
         final int originalLimit = limit();
-        limit(initialOffset + actingBlockLength);
+        limit(offset + actingBlockLength);
         builder.append("[Ticker24hSymbolFullResponse](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");

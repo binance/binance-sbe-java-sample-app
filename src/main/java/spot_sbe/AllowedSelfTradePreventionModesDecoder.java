@@ -6,8 +6,8 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class AllowedSelfTradePreventionModesDecoder
 {
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final int ENCODED_LENGTH = 1;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -101,6 +101,26 @@ public final class AllowedSelfTradePreventionModesDecoder
         return 0 != (value & (1 << 3));
     }
 
+    public boolean decrement()
+    {
+        return 0 != (buffer.getByte(offset) & (1 << 4));
+    }
+
+    public static boolean decrement(final byte value)
+    {
+        return 0 != (value & (1 << 4));
+    }
+
+    public boolean nonRepresentable()
+    {
+        return 0 != (buffer.getByte(offset) & (1 << 7));
+    }
+
+    public static boolean nonRepresentable(final byte value)
+    {
+        return 0 != (value & (1 << 7));
+    }
+
     public String toString()
     {
         if (null == buffer)
@@ -149,6 +169,24 @@ public final class AllowedSelfTradePreventionModesDecoder
                 builder.append(',');
             }
             builder.append("expireBoth");
+            atLeastOne = true;
+        }
+        if (decrement())
+        {
+            if (atLeastOne)
+            {
+                builder.append(',');
+            }
+            builder.append("decrement");
+            atLeastOne = true;
+        }
+        if (nonRepresentable())
+        {
+            if (atLeastOne)
+            {
+                builder.append(',');
+            }
+            builder.append("nonRepresentable");
             atLeastOne = true;
         }
         builder.append('}');

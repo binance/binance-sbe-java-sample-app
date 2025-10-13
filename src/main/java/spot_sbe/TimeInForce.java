@@ -10,6 +10,8 @@ public enum TimeInForce
 
     Fok((short)2),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -45,6 +47,7 @@ public enum TimeInForce
             case 0: return Gtc;
             case 1: return Ioc;
             case 2: return Fok;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 

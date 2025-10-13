@@ -6,8 +6,8 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class OrderTypesDecoder
 {
-    public static final int SCHEMA_ID = 1;
-    public static final int SCHEMA_VERSION = 0;
+    public static final int SCHEMA_ID = 3;
+    public static final int SCHEMA_VERSION = 1;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final int ENCODED_LENGTH = 2;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -58,12 +58,12 @@ public final class OrderTypesDecoder
 
     public int getRaw()
     {
-        return (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        return (buffer.getShort(offset, BYTE_ORDER) & 0xFFFF);
     }
 
     public boolean market()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 0));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 0));
     }
 
     public static boolean market(final short value)
@@ -73,7 +73,7 @@ public final class OrderTypesDecoder
 
     public boolean limit()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 1));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 1));
     }
 
     public static boolean limit(final short value)
@@ -83,7 +83,7 @@ public final class OrderTypesDecoder
 
     public boolean stopLoss()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 2));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 2));
     }
 
     public static boolean stopLoss(final short value)
@@ -93,7 +93,7 @@ public final class OrderTypesDecoder
 
     public boolean stopLossLimit()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 3));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 3));
     }
 
     public static boolean stopLossLimit(final short value)
@@ -103,7 +103,7 @@ public final class OrderTypesDecoder
 
     public boolean takeProfit()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 4));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 4));
     }
 
     public static boolean takeProfit(final short value)
@@ -113,7 +113,7 @@ public final class OrderTypesDecoder
 
     public boolean takeProfitLimit()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 5));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 5));
     }
 
     public static boolean takeProfitLimit(final short value)
@@ -123,12 +123,22 @@ public final class OrderTypesDecoder
 
     public boolean limitMaker()
     {
-        return 0 != (buffer.getShort(offset, java.nio.ByteOrder.LITTLE_ENDIAN) & (1 << 6));
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 6));
     }
 
     public static boolean limitMaker(final short value)
     {
         return 0 != (value & (1 << 6));
+    }
+
+    public boolean nonRepresentable()
+    {
+        return 0 != (buffer.getShort(offset, BYTE_ORDER) & (1 << 15));
+    }
+
+    public static boolean nonRepresentable(final short value)
+    {
+        return 0 != (value & (1 << 15));
     }
 
     public String toString()
@@ -206,6 +216,15 @@ public final class OrderTypesDecoder
                 builder.append(',');
             }
             builder.append("limitMaker");
+            atLeastOne = true;
+        }
+        if (nonRepresentable())
+        {
+            if (atLeastOne)
+            {
+                builder.append(',');
+            }
+            builder.append("nonRepresentable");
             atLeastOne = true;
         }
         builder.append('}');

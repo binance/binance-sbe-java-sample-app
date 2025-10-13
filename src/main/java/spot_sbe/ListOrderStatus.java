@@ -12,6 +12,8 @@ public enum ListOrderStatus
 
     Reject((short)3),
 
+    NonRepresentable((short)254),
+
     /**
      * To be used to represent not present or null.
      */
@@ -48,6 +50,7 @@ public enum ListOrderStatus
             case 1: return Executing;
             case 2: return AllDone;
             case 3: return Reject;
+            case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }
 
