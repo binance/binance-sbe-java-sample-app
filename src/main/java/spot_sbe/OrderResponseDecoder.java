@@ -7,10 +7,10 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class OrderResponseDecoder
 {
-    public static final int BLOCK_LENGTH = 162;
+    public static final int BLOCK_LENGTH = 163;
     public static final int TEMPLATE_ID = 304;
     public static final int SCHEMA_ID = 3;
-    public static final int SCHEMA_VERSION = 1;
+    public static final int SCHEMA_VERSION = 4;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
@@ -1732,6 +1732,57 @@ public final class OrderResponseDecoder
     }
 
 
+    public static int expiryReasonId()
+    {
+        return 34;
+    }
+
+    public static int expiryReasonSinceVersion()
+    {
+        return 4;
+    }
+
+    public static int expiryReasonEncodingOffset()
+    {
+        return 162;
+    }
+
+    public static int expiryReasonEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String expiryReasonMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public short expiryReasonRaw()
+    {
+        if (parentMessage.actingVersion < 4)
+        {
+            return (short)255;
+        }
+
+        return ((short)(buffer.getByte(offset + 162) & 0xFF));
+    }
+
+    public ExpiryReason expiryReason()
+    {
+        if (parentMessage.actingVersion < 4)
+        {
+            return ExpiryReason.NULL_VAL;
+        }
+
+        return ExpiryReason.get(((short)(buffer.getByte(offset + 162) & 0xFF)));
+    }
+
+
     public static int symbolId()
     {
         return 200;
@@ -2067,6 +2118,9 @@ public final class OrderResponseDecoder
         builder.append('|');
         builder.append("peggedPrice=");
         builder.append(this.peggedPrice());
+        builder.append('|');
+        builder.append("expiryReason=");
+        builder.append(this.expiryReason());
         builder.append('|');
         builder.append("symbol=");
         builder.append('\'').append(symbol()).append('\'');
