@@ -7,10 +7,10 @@ import org.agrona.DirectBuffer;
 @SuppressWarnings("all")
 public final class NewOrderFullResponseDecoder
 {
-    public static final int BLOCK_LENGTH = 153;
+    public static final int BLOCK_LENGTH = 154;
     public static final int TEMPLATE_ID = 302;
     public static final int SCHEMA_ID = 3;
-    public static final int SCHEMA_VERSION = 1;
+    public static final int SCHEMA_VERSION = 4;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
@@ -1640,6 +1640,57 @@ public final class NewOrderFullResponseDecoder
     }
 
 
+    public static int expiryReasonId()
+    {
+        return 32;
+    }
+
+    public static int expiryReasonSinceVersion()
+    {
+        return 3;
+    }
+
+    public static int expiryReasonEncodingOffset()
+    {
+        return 153;
+    }
+
+    public static int expiryReasonEncodingLength()
+    {
+        return 1;
+    }
+
+    public static String expiryReasonMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "optional";
+        }
+
+        return "";
+    }
+
+    public short expiryReasonRaw()
+    {
+        if (parentMessage.actingVersion < 3)
+        {
+            return (short)255;
+        }
+
+        return ((short)(buffer.getByte(offset + 153) & 0xFF));
+    }
+
+    public ExpiryReason expiryReason()
+    {
+        if (parentMessage.actingVersion < 3)
+        {
+            return ExpiryReason.NULL_VAL;
+        }
+
+        return ExpiryReason.get(((short)(buffer.getByte(offset + 153) & 0xFF)));
+    }
+
+
     private final FillsDecoder fills = new FillsDecoder(this);
 
     public static long fillsDecoderId()
@@ -3073,6 +3124,9 @@ public final class NewOrderFullResponseDecoder
         builder.append('|');
         builder.append("peggedPrice=");
         builder.append(this.peggedPrice());
+        builder.append('|');
+        builder.append("expiryReason=");
+        builder.append(this.expiryReason());
         builder.append('|');
         builder.append("fills=[");
         final int fillsOriginalOffset = fills.offset;

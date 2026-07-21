@@ -7,7 +7,7 @@ import org.agrona.DirectBuffer;
 public final class AllowedSelfTradePreventionModesDecoder
 {
     public static final int SCHEMA_ID = 3;
-    public static final int SCHEMA_VERSION = 1;
+    public static final int SCHEMA_VERSION = 4;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final int ENCODED_LENGTH = 1;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
@@ -111,6 +111,16 @@ public final class AllowedSelfTradePreventionModesDecoder
         return 0 != (value & (1 << 4));
     }
 
+    public boolean transfer()
+    {
+        return 0 != (buffer.getByte(offset) & (1 << 5));
+    }
+
+    public static boolean transfer(final byte value)
+    {
+        return 0 != (value & (1 << 5));
+    }
+
     public boolean nonRepresentable()
     {
         return 0 != (buffer.getByte(offset) & (1 << 7));
@@ -178,6 +188,15 @@ public final class AllowedSelfTradePreventionModesDecoder
                 builder.append(',');
             }
             builder.append("decrement");
+            atLeastOne = true;
+        }
+        if (transfer())
+        {
+            if (atLeastOne)
+            {
+                builder.append(',');
+            }
+            builder.append("transfer");
             atLeastOne = true;
         }
         if (nonRepresentable())
