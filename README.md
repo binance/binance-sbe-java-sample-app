@@ -24,13 +24,13 @@ The following commands use `./target/sbe-sample-app-1.0-SNAPSHOT.jar` to output 
 ### Via reading SBE-encoded HTTP response from STDIN
 
 ```shell
-curl -X GET -H 'Accept: application/sbe' -H 'X-MBX-SBE: 3:4' 'https://api.binance.com/api/v3/exchangeInfo' | java -jar ./target/sbe-sample-app-1.0-SNAPSHOT.jar -
+curl -X GET -H 'Accept: application/sbe' -H 'X-MBX-SBE: 3:5' 'https://api.binance.com/api/v3/exchangeInfo' | java -jar ./target/sbe-sample-app-1.0-SNAPSHOT.jar -
 ```
 
 ### Via reading SBE-encoded WebSocket response from STDIN
 
 ```shell
-echo '{"id":"93fb61ef-89f8-4d6e-b022-4f035a3fadad","method":"exchangeInfo","params":{}}' | ../../tools/websocket_send.py  'wss://ws-api.binance.com:443/ws-api/v3?responseFormat=sbe&sbeSchemaId=3&sbeSchemaVersion=4' | java -jar ./target/sbe-sample-app-1.0-SNAPSHOT.jar -
+echo '{"id":"93fb61ef-89f8-4d6e-b022-4f035a3fadad","method":"exchangeInfo","params":{}}' | ../../tools/websocket_send.py  'wss://ws-api.binance.com:443/ws-api/v3?responseFormat=sbe&sbeSchemaId=3&sbeSchemaVersion=5' | java -jar ./target/sbe-sample-app-1.0-SNAPSHOT.jar -
 ```
 
 Note: To run `websocket_send.py`, your Python 3 environment should include the `websocket-client` package with the integrated `create_connection` function.

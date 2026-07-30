@@ -12,6 +12,8 @@ public enum SymbolStatus
 
     Break((short)3),
 
+    CancelOnly((short)4),
+
     NonRepresentable((short)254),
 
     /**
@@ -50,6 +52,7 @@ public enum SymbolStatus
             case 1: return EndOfDay;
             case 2: return Halt;
             case 3: return Break;
+            case 4: return CancelOnly;
             case 254: return NonRepresentable;
             case 255: return NULL_VAL;
         }

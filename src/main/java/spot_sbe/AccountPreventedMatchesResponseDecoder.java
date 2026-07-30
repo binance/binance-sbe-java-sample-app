@@ -10,7 +10,7 @@ public final class AccountPreventedMatchesResponseDecoder
     public static final int BLOCK_LENGTH = 0;
     public static final int TEMPLATE_ID = 403;
     public static final int SCHEMA_ID = 3;
-    public static final int SCHEMA_VERSION = 4;
+    public static final int SCHEMA_VERSION = 5;
     public static final String SEMANTIC_VERSION = "5.2";
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
